@@ -1,3 +1,37 @@
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// ─── Mock data for GitHub Pages demo ─────────────────────────────────────────
+const MOCK_HOMES = [
+  {
+    address: "1847 Willow Glen Dr, San Jose, CA 95125",
+    price: 985000, beds: 4, baths: 2.5, sqft: 2150, daysOnMarket: 4,
+    features: "Garage, Backyard, Updated Kitchen, Hardwood Floors, Central AC, Quiet Street",
+    score: 88,
+    breakdown: { budget: 13, location: 15, basics: 14, must_haves: 22, nice_to_haves: 13 }
+  },
+  {
+    address: "912 Kiely Blvd, Santa Clara, CA 95051",
+    price: 1050000, beds: 4, baths: 3, sqft: 2380, daysOnMarket: 7,
+    features: "Garage, Pool, Hardwood Floors, Central AC, Large Backyard, EV Charger",
+    score: 81,
+    breakdown: { budget: 11, location: 14, basics: 15, must_haves: 23, nice_to_haves: 14 }
+  },
+  {
+    address: "3204 Blossom Hill Rd, San Jose, CA 95118",
+    price: 879000, beds: 3, baths: 2, sqft: 1920, daysOnMarket: 12,
+    features: "Garage, Central AC, Updated Kitchen, Cul-de-sac, Good Schools",
+    score: 74,
+    breakdown: { budget: 15, location: 15, basics: 11, must_haves: 18, nice_to_haves: 9 }
+  },
+  {
+    address: "2756 Stevens Creek Blvd, Santa Clara, CA 95050",
+    price: 1140000, beds: 4, baths: 3.5, sqft: 2600, daysOnMarket: 21,
+    features: "Garage, Modern Kitchen, Smart Home, EV Charger, Home Office",
+    score: 63,
+    breakdown: { budget: 7, location: 14, basics: 15, must_haves: 15, nice_to_haves: 10 }
+  }
+];
+
 document.getElementById('buyerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -30,21 +64,27 @@ document.getElementById('buyerForm').addEventListener('submit', async (e) => {
   rankButton.innerHTML = '<span class="loading"></span> Ranking homes…';
 
   try {
-    const response = await fetch('/api/smart-home/rank', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        budget_min: budgetMin,
-        budget_max: budgetMax,
-        locations,
-        must_haves,
-        nice_to_haves,
-        other_requirements: otherRequirements,
-      }),
-    });
-
-    if (!response.ok) throw new Error('Failed to rank homes');
-    const results = await response.json();
+    let results;
+    if (isLocalhost) {
+      const response = await fetch('/api/smart-home/rank', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          budget_min: budgetMin,
+          budget_max: budgetMax,
+          locations,
+          must_haves,
+          nice_to_haves,
+          other_requirements: otherRequirements,
+        }),
+      });
+      if (!response.ok) throw new Error('Failed to rank homes');
+      results = await response.json();
+    } else {
+      // GitHub Pages demo: simulate API delay then return mock data
+      await new Promise(r => setTimeout(r, 1800));
+      results = MOCK_HOMES;
+    }
     displayResults(results, budgetMin, budgetMax, locations, must_haves, nice_to_haves, otherRequirements);
   } catch (error) {
     console.error(error);

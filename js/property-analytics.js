@@ -1,3 +1,35 @@
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// ─── Mock data for GitHub Pages demo ─────────────────────────────────────────
+const MOCK_REPORT = {
+  tax_year: "2025",
+  property_type: "Single Family Residential",
+  property: "742 Evergreen Terrace, Springfield, CA 90210",
+  manager: "HomeRiver Group",
+  generated: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+  months: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  income: {
+    label: "Rental Income",
+    monthly: [1800,1800,1800,1800,1800,1800,1800,1800,1800,1800,1800,1800],
+    total: 21600
+  },
+  expense_rows: [
+    { label: "Management Fee (10%)",  monthly: [180,180,180,180,180,180,180,180,180,180,180,180], total: 2160 },
+    { label: "Repairs & Maintenance", monthly: [0,0,350,0,0,125,0,0,0,480,0,0],                  total: 955  },
+    { label: "Insurance",             monthly: [142,142,142,142,142,142,142,142,142,142,142,142], total: 1704 },
+    { label: "Property Tax",          monthly: [0,0,0,1250,0,0,0,0,0,1250,0,0],                  total: 2500 },
+    { label: "HOA Fees",              monthly: [0,0,0,0,0,0,0,0,0,0,0,0],                         total: 0    }
+  ],
+  total_expenses: {
+    monthly: [322,322,672,1572,322,447,322,322,322,2052,322,322],
+    total: 7319
+  },
+  net_income: {
+    monthly: [1478,1478,1128,228,1478,1353,1478,1478,1478,-252,1478,1478],
+    total: 14281
+  }
+};
+
 document.getElementById('propertySelect').addEventListener('change', (e) => {
   const processButton = document.getElementById('processButton');
   processButton.disabled = !e.target.value;
@@ -17,14 +49,20 @@ async function processProperty() {
   processButton.innerHTML = '<span class="loading"></span> Processing...';
 
   try {
-    const response = await fetch('/api/property-analytics/process', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ property_name: property })
-    });
-
-    if (!response.ok) throw new Error('Failed to process property');
-    const report = await response.json();
+    let report;
+    if (isLocalhost) {
+      const response = await fetch('/api/property-analytics/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ property_name: property })
+      });
+      if (!response.ok) throw new Error('Failed to process property');
+      report = await response.json();
+    } else {
+      // GitHub Pages demo: simulate processing delay then return mock data
+      await new Promise(r => setTimeout(r, 2000));
+      report = MOCK_REPORT;
+    }
     displayReport(report);
   } catch (error) {
     console.error(error);
