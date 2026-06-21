@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Home Digest – Hector Moran</title>
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #161616;
+      color: #f0f0f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== NAV ===== */
+    .home-nav {
+      background: #111;
+      border-bottom: 1px solid #252525;
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .home-nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e85020;
+    }
+
+    .home-nav-links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .home-nav-links a {
+      color: #777;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .home-nav-links a:hover,
+    .home-nav-links a.active {
+      color: #f0f0f0;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 5.5rem 1.5rem 4.5rem;
+      border-bottom: 1px solid #252525;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1.5px solid #e85020;
+      color: #e85020;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-bottom: 0.15rem;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 800;
+      color: #e85020;
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-desc {
+      font-size: 0.97rem;
+      color: #888;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px solid #3a3a3a;
+      color: #e0e0e0;
+      background: transparent;
+      padding: 0.55rem 1.15rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .hero-btn:hover {
+      border-color: #666;
+      background: #1e1e1e;
+    }
+
+    /* ===== PAGE CONTAINER ===== */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 5rem;
+    }
+
+    /* ===== SECTION LABELS ===== */
+    .micro-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #e85020;
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+
+    /* ===== DARK CARD ===== */
+    .dark-card {
+      margin-bottom: 1rem;
+    }
+
+    .dark-card p {
+      font-size: 0.97rem;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+
+    .dark-card p + p { margin-top: 0.85rem; }
+
+    /* ===== USER GRID ===== */
+    .user-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .user-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .user-card-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e85020;
+      margin-bottom: 0.4rem;
+    }
+
+    .user-card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .user-card p {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    /* ===== INSIGHT CALLOUT ===== */
+    .insight {
+      border-left: 3px solid #e85020;
+      background: rgba(232, 80, 32, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+    }
+
+    .insight p {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.75;
+    }
+
+    .insight strong { color: #fff; }
+
+    /* ===== BLUE CALLOUT ===== */
+    .callout-blue {
+      border-left: 3px solid #3b82f6;
+      background: rgba(37, 99, 235, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+    }
+
+    .callout-blue p {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.75;
+    }
+
+    .callout-blue strong { color: #fff; }
+
+    /* ===== DECISION CARDS ===== */
+    .decision-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 0.85rem;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .decision-side-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #666;
+      padding-top: 0.15rem;
+    }
+
+    .decision-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .decision-card p {
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+
+    /* ===== OUTCOME STATS ===== */
+    .outcome-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-box {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #e85020;
+      margin-bottom: 0.3rem;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: #bbb;
+      line-height: 1.4;
+    }
+
+    /* ===== SCORING BARS ===== */
+    .score-bar-row {
+      display: grid;
+      grid-template-columns: 175px 1fr 56px;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .score-bar-label {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+    }
+
+    .score-bar-track {
+      background: #2a2a2a;
+      border-radius: 4px;
+      height: 8px;
+    }
+
+    .score-bar-fill {
+      background: #e85020;
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .score-bar-fill.negative { background: #ef4444; }
+
+    .score-bar-value {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: right;
+    }
+
+    .score-bar-value.negative { color: #ef4444; }
+
+    /* ===== PIPELINE (full-bleed) ===== */
+    .pipeline-section {
+      background: #111;
+      border-top: 1px solid #252525;
+      border-bottom: 1px solid #252525;
+      padding: 3rem 0;
+    }
+
+    .section-heading {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .pipeline-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .pipeline-node {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .pipeline-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.6rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .pipeline-icon.input  { background: #2a2a1a; color: #d4a017; border: 1px solid #4a3a00; }
+    .pipeline-icon.agent  { background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid #1e3a6a; }
+    .pipeline-icon.output { background: rgba(16, 185, 129, 0.12); color: #4ade80; border: 1px solid #14532d; }
+
+    .pipeline-node strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-bottom: 0.2rem;
+    }
+
+    .pipeline-node span {
+      font-size: 0.72rem;
+      color: #bbb;
+    }
+
+    .pipeline-arrow {
+      color: #333;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .pipeline-callout {
+      margin-top: 1.5rem;
+      border-left: 3px solid #2563eb;
+      background: rgba(37, 99, 235, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    .pipeline-callout strong { color: #fff; }
+
+    /* ===== DEMO FORM ===== */
+    .form-section { padding: 3rem 0; }
+
+    .form-inner {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .form-group { margin-bottom: 1.75rem; }
+
+    .form-group h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .form-group label.field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #aaa;
+      margin-bottom: 0.5rem;
+    }
+
+    .budget-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 0.93rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #e85020;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 0.93rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      transition: border-color 0.2s;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: #e85020;
+    }
+
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .checkbox-list label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.93rem;
+      color: #e0e0e0;
+      cursor: pointer;
+    }
+
+    .checkbox-list input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #e85020;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .form-hint {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 0.4rem;
+    }
+
+    .form-button {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      background: #e85020;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.93rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .form-button:hover:not(:disabled) { background: #c94018; }
+    .form-button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Loading spinner */
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Results */
+    #results .result-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    #results .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    #results .result-address {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    #results .result-score {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #e85020;
+    }
+
+    #results .result-reason {
+      font-size: 0.88rem;
+      color: #bbb;
+      line-height: 1.65;
+    }
+
+    /* ===== PM SKILLS ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .skill-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .skill-card.blue  { border-left: 3px solid #3b82f6; }
+    .skill-card.green { border-left: 3px solid #4ade80; }
+    .skill-card.amber { border-left: 3px solid #f59e0b; }
+
+    .skill-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .skill-card p {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    /* ===== RESULT CARDS (demo output) ===== */
+    .result-rank-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 0.3rem;
+    }
+
+    .result-rank-badge.top { color: #f59e0b; }
+
+    .result-score-circle {
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1;
+      text-align: right;
+    }
+
+    .result-score-circle.high { color: #4ade80; }
+    .result-score-circle.mid  { color: #e85020; }
+    .result-score-circle.low  { color: #666; }
+
+    .result-score-label {
+      font-size: 0.65rem;
+      color: #555;
+      text-align: right;
+    }
+
+    .result-meta {
+      font-size: 0.88rem;
+      color: #888;
+      margin-bottom: 0.85rem;
+    }
+
+    .result-summary-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.85rem;
+    }
+
+    .summary-pill {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .summary-pill.hit  { background: rgba(74,222,128,0.1);  color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+    .summary-pill.miss { background: rgba(239,68,68,0.1);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .summary-pill.ok   { background: rgba(232,80,32,0.12);  color: #fb923c; border: 1px solid rgba(232,80,32,0.3); }
+    .summary-pill.dim  { background: #1a1a1a; color: #666; border: 1px solid #272727; }
+
+    .feature-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-chip {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .feature-chip.matched { background: rgba(232,80,32,0.15); color: #fb923c; border: 1px solid rgba(232,80,32,0.3); }
+    .feature-chip.neutral { background: #1a1a1a; color: #777; border: 1px solid #272727; }
+
+    .breakdown-toggle {
+      border-top: 1px solid #272727;
+      padding-top: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .breakdown-toggle summary {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      user-select: none;
+      margin-bottom: 0;
+      transition: color 0.15s;
+    }
+
+    .breakdown-toggle summary::-webkit-details-marker { display: none; }
+    .breakdown-toggle summary:hover { color: #888; }
+    .breakdown-toggle[open] summary { color: #aaa; margin-bottom: 1rem; }
+
+    .breakdown-toggle .score-bar-row { margin-bottom: 0.65rem; }
+    .breakdown-toggle .score-bar-row:last-child { margin-bottom: 0; }
+
+    .result-card.top-pick {
+      border-color: rgba(245,158,11,0.3);
+      background: linear-gradient(160deg, #1e1c12 0%, #1c1c1c 60%);
+    }
+
+    /* ===== FOOTER ===== */
+    .home-footer {
+      border-top: 1px solid #252525;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .home-footer a { color: #e85020; }
+    .home-footer a:hover { text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 700px) {
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .outcome-stats { grid-template-columns: 1fr 1fr; }
+      .decision-card { grid-template-columns: 1fr; gap: 0.4rem; }
+    }
+
+    @media (max-width: 600px) {
+      .home-nav { padding: 0.85rem 1rem; }
+      .home-nav-links { gap: 1rem; }
+      .page { padding: 2rem 1rem 4rem; }
+      .user-grid { grid-template-columns: 1fr; }
+      .outcome-stats { grid-template-columns: 1fr 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+      .score-bar-row { grid-template-columns: 120px 1fr 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="home-nav">
+    <a href="/" class="home-nav-brand">Hector M</a>
+    <div class="home-nav-links">
+      <a href="/">Home</a>
+      <a href="/smart-home" class="active">Smart Home</a>
+      <a href="/property-analytics">Rental Reports</a>
+      <a href="/job-search">Job Search</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <span class="hero-badge">Case Study · AI Product</span>
+    <h1>Smart Home Digest</h1>
+    <p class="hero-tagline">AI · Scoring · Telegram</p>
+    <p class="hero-desc">Homebuyers get 200+ listing alerts a day. Most are noise. I built an AI that reads a buyer's real priorities and delivers the 3–5 homes that actually matter — with the reasoning visible.</p>
+    <div class="hero-actions">
+      <a href="/" class="hero-btn">← All projects</a>
+    </div>
+  </section>
+
+  <!-- ===== PAGE ===== -->
+  <div class="page">
+
+    <!-- ── THE PROBLEM ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">The Problem</p>
+      <div class="dark-card">
+        <p>Zillow and Redfin are built to surface everything. That's great for the platforms — more alerts means more engagement — but it's the wrong product for a buyer who's already overwhelmed. The signal is buried in the noise.</p>
+        <p>Real estate agents solve this with judgment. But agent judgment isn't available at 7am, isn't personalised to your exact criteria, and isn't scalable. I wanted to see if AI could replicate that filtering instinct — and be transparent enough that buyers would actually trust it.</p>
+      </div>
+    </section>
+
+    <!-- ── USERS & WHAT I LEARNED ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Users &amp; What I Learned</p>
+      <div class="user-grid">
+        <div class="user-card">
+          <div class="user-card-label">Primary User</div>
+          <div class="user-card-name">The homebuyer</div>
+          <p>Wants to open one message in the morning and know exactly which 3–5 homes to look at. Not a ranked list of 50. Not a spreadsheet. A confident recommendation they can act on.</p>
+        </div>
+        <div class="user-card">
+          <div class="user-card-label">Critical Insight</div>
+          <div class="user-card-name">Trust is a product feature</div>
+          <p>Test buyers override a black-box ranking. They need to see <em>why</em> a home scored 85 vs 45 — which factors drove it, which deal-breaker penalised it. Without transparency, the system gets ignored.</p>
+        </div>
+      </div>
+      <div class="insight">
+        <p><strong>This insight shaped the entire algorithm design.</strong> Transparent scoring with visible factor weights wasn't a nice-to-have — it was the thing that made the product usable. A buyer who understands the score acts on it. A buyer who doesn't, doesn't.</p>
+      </div>
+    </section>
+
+    <!-- ── DECISIONS ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Decisions I Made and Why</p>
+
+      <div class="decision-card">
+        <div class="decision-side-label">Must-haves at 25%</div>
+        <div>
+          <div class="decision-title">Non-negotiables get the highest single weight.</div>
+          <p>User research showed buyers stretch on budget before they compromise on a must-have. Weighting must-haves above price reflects how buyers actually make decisions — not how platforms model preferences.</p>
+        </div>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-side-label">Delivery Channel</div>
+        <div>
+          <div class="decision-title">Telegram, not email.</div>
+          <p>Email digests get archived unread. Telegram gets opened. Channel choice is a product decision — the best ranking algorithm fails if nobody sees the output. I tested both and measured open rates.</p>
+        </div>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-side-label">Deal-breaker Penalties</div>
+        <div>
+          <div class="decision-title">Negative scoring, not exclusion filters.</div>
+          <p>Hard exclusions remove homes buyers might want to see with caveats. A −5% penalty per deal-breaker keeps them visible while clearly signalling the tradeoff — and buyers can make the final call.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── OUTCOMES ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Outcomes</p>
+      <div class="outcome-stats">
+        <div class="stat-box">
+          <div class="stat-number">2</div>
+          <div class="stat-label">real buyers tested<br>with live profiles</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">7</div>
+          <div class="stat-label">weighted<br>scoring criteria</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">Daily</div>
+          <div class="stat-label">automated delivery,<br>zero manual steps</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">0–100</div>
+          <div class="stat-label">transparent score<br>with visible reasoning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SCORING ALGORITHM ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">The Scoring Algorithm</p>
+
+      <div class="score-bar-row">
+        <div class="score-bar-label">Must-haves</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:100%;"></div></div>
+        <div class="score-bar-value">25%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Budget fit</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;"></div></div>
+        <div class="score-bar-value">15%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Location</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;"></div></div>
+        <div class="score-bar-value">15%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Basics (bed/bath/sqft)</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;"></div></div>
+        <div class="score-bar-value">15%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Nice-to-haves</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;"></div></div>
+        <div class="score-bar-value">15%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Schools</div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:40%;"></div></div>
+        <div class="score-bar-value">10%</div>
+      </div>
+      <div class="score-bar-row">
+        <div class="score-bar-label">Deal-breakers</div>
+        <div class="score-bar-track"><div class="score-bar-fill negative" style="width:20%;"></div></div>
+        <div class="score-bar-value negative">−5% ea</div>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <!-- ── PIPELINE (full-bleed) ── -->
+  <section class="pipeline-section">
+    <div style="max-width: 960px; margin: 0 auto; padding: 0 2.5rem;">
+      <p class="micro-label">5-Agent Processing Pipeline</p>
+      <p class="section-desc">Behind every ranking is an AI pipeline that fetches listings, normalises data, scores homes intelligently, and formats the digest for delivery.</p>
+      <div class="pipeline-track">
+        <div class="pipeline-node">
+          <div class="pipeline-icon input">📋</div>
+          <strong>Buyer Profile</strong>
+          <span>Form input</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon agent">0</div>
+          <strong>Fetch Listings</strong>
+          <span>Redfin scraper</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon agent">1</div>
+          <strong>Normalize</strong>
+          <span>Standardise JSON</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon agent">2</div>
+          <strong>Score &amp; Rank</strong>
+          <span>0–100 w/ reasoning</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon output">3</div>
+          <strong>Format Digest</strong>
+          <span>Telegram delivery</span>
+        </div>
+      </div>
+      <div class="pipeline-callout">
+        <strong>Pipeline:</strong> User submits buyer profile via form → Agent 0 scrapes Redfin with filters → Agent 1 normalises raw listing data to standardised JSON → Agent 2 scores each home 0–100 with transparent reasoning → Agent 3 formats as warm Telegram digest → Delivered daily with zero manual steps.
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+
+    <!-- ── DEMO ── -->
+    <section class="form-section">
+      <p class="micro-label">Try the Demo</p>
+      <p class="section-desc">Fill in your profile to see how the algorithm ranks Bay Area homes. All data is dummy data for demonstration.</p>
+
+      <div class="form-inner">
+        <form id="buyerForm">
+
+          <!-- Budget -->
+          <div class="form-group">
+            <h3>Budget Range</h3>
+            <div class="budget-grid">
+              <div>
+                <label class="field-label">Minimum ($)</label>
+                <input type="number" id="budgetMin" class="form-input" value="800000" required>
+              </div>
+              <div>
+                <label class="field-label">Maximum ($)</label>
+                <input type="number" id="budgetMax" class="form-input" value="1200000" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Locations -->
+          <div class="form-group">
+            <h3>Preferred Locations</h3>
+            <div class="checkbox-list">
+              <label><input type="checkbox" name="location" value="San Jose" checked> San Jose</label>
+              <label><input type="checkbox" name="location" value="Santa Clara" checked> Santa Clara</label>
+              <label><input type="checkbox" name="location" value="Los Gatos"> Los Gatos</label>
+            </div>
+          </div>
+
+          <!-- Must-Haves -->
+          <div class="form-group">
+            <h3>Must-Have Features</h3>
+            <div class="checkbox-list">
+              <label><input type="checkbox" name="must_have" value="garage" checked> Garage</label>
+              <label><input type="checkbox" name="must_have" value="quiet"> Quiet Street</label>
+              <label><input type="checkbox" name="must_have" value="updated"> Updated Kitchen</label>
+              <label><input type="checkbox" name="must_have" value="pool"> Pool</label>
+            </div>
+          </div>
+
+          <!-- Nice-to-Haves -->
+          <div class="form-group">
+            <h3>Nice-to-Have Features</h3>
+            <div class="checkbox-list" style="margin-bottom: 1.25rem;">
+              <label><input type="checkbox" name="nice_to_have" value="hardwood"> Hardwood Floors</label>
+              <label><input type="checkbox" name="nice_to_have" value="fireplace"> Fireplace</label>
+              <label><input type="checkbox" name="nice_to_have" value="garden"> Garden Space</label>
+              <label><input type="checkbox" name="nice_to_have" value="patio"> Patio</label>
+            </div>
+            <label class="field-label">Other Requirements</label>
+            <textarea id="otherRequirements" class="form-textarea" placeholder="e.g., mountain views, near hiking trails, walkable neighborhood…"></textarea>
+            <p class="form-hint">Tell us about other features that matter to you</p>
+          </div>
+
+          <button type="submit" class="form-button" id="rankButton">Rank Homes</button>
+        </form>
+      </div>
+
+      <div id="results" style="margin-top: 2rem; max-width: 620px; margin-left: auto; margin-right: auto;"></div>
+    </section>
+
+    <!-- ── PM SKILLS ── -->
+    <section>
+      <p class="micro-label">What This Demonstrates</p>
+      <div class="skills-grid">
+        <div class="skill-card blue">
+          <h3>🎯 Algorithm Design</h3>
+          <p>Not guessing. Transparent weighting: budget 15%, location 15%, must-haves 25%. Every factor has a reason tied to user needs.</p>
+        </div>
+        <div class="skill-card green">
+          <h3>👥 User Research &amp; Validation</h3>
+          <p>Tested with real buyers. 2 test profiles with different budgets and priorities show the system works across personas.</p>
+        </div>
+        <div class="skill-card amber">
+          <h3>🔍 Transparent Logic</h3>
+          <p>Users see exactly why a home scored 85 vs 45. Builds trust. Shows you think about user confidence, not just accuracy.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="home-footer">
+    Built by Hector Moran · <a href="mailto:hmoran@me.com">hmoran@me.com</a>
+  </footer>
+
+  <script src="/js/smart-home.js"></script>
+</body>
+</html>

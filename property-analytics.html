@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Management Reporter – Hector Moran</title>
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #161616;
+      color: #f0f0f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== NAV ===== */
+    .home-nav {
+      background: #111;
+      border-bottom: 1px solid #252525;
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .home-nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e85020;
+    }
+
+    .home-nav-links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .home-nav-links a {
+      color: #777;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .home-nav-links a:hover,
+    .home-nav-links a.active {
+      color: #f0f0f0;
+    }
+
+    /* ===== PAGE CONTAINER ===== */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 5rem;
+    }
+
+    /* ===== PAGE HEADER ===== */
+    .page-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .page-back:hover { color: #aaa; }
+
+    .page-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e85020;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title {
+      font-size: clamp(1.8rem, 5vw, 2.75rem);
+      font-weight: 800;
+      font-style: italic;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-subtitle {
+      font-size: 1rem;
+      color: #e0e0e0;
+      line-height: 1.75;
+      max-width: 640px;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-subtitle strong { color: #fff; }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1.5px solid #4ade80;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.07);
+    }
+
+    .badge-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .page-divider {
+      border: none;
+      border-top: 1px solid #252525;
+      margin: 2.5rem 0;
+    }
+
+    /* ===== SECTION LABELS ===== */
+    .micro-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #e85020;
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+
+    /* ===== DARK CARD ===== */
+    .dark-card {
+      margin-bottom: 1rem;
+    }
+
+    .dark-card p {
+      font-size: 0.97rem;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+
+    .dark-card p + p { margin-top: 0.85rem; }
+
+    /* ===== USER GRID ===== */
+    .user-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .user-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .user-card-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e85020;
+      margin-bottom: 0.4rem;
+    }
+
+    .user-card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .user-card p {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    /* ===== INSIGHT CALLOUT ===== */
+    .insight {
+      border-left: 3px solid #e85020;
+      background: rgba(232, 80, 32, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+    }
+
+    .insight p {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.75;
+    }
+
+    .insight strong { color: #fff; }
+
+    /* ===== DECISION CARDS ===== */
+    .decision-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .decision-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .decision-card p {
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+
+    /* ===== OUTCOME STATS ===== */
+    .outcome-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-box {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #e85020;
+      margin-bottom: 0.3rem;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: #bbb;
+      line-height: 1.4;
+    }
+
+    /* ===== PIPELINE ===== */
+    .pipeline-section {
+      background: #111;
+      border-top: 1px solid #252525;
+      border-bottom: 1px solid #252525;
+      padding: 3rem 0;
+    }
+
+    .section-heading {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .pipeline-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .pipeline-node {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .pipeline-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.6rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .pipeline-icon.input { background: #2a2a1a; color: #d4a017; border: 1px solid #4a3a00; }
+    .pipeline-icon.agent { background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid #1e3a6a; }
+    .pipeline-icon.output { background: rgba(16, 185, 129, 0.12); color: #4ade80; border: 1px solid #14532d; }
+
+    .pipeline-node strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-bottom: 0.2rem;
+    }
+
+    .pipeline-node span {
+      font-size: 0.72rem;
+      color: #bbb;
+    }
+
+    .pipeline-arrow {
+      color: #333;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .pipeline-callout {
+      margin-top: 1.5rem;
+      border-left: 3px solid #2563eb;
+      background: rgba(37, 99, 235, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    .pipeline-callout strong { color: #fff; }
+
+    /* ===== DEMO FORM ===== */
+    .form-section { padding: 3rem 0; }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #aaa;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #1c1c1c;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 0.93rem;
+      font-family: inherit;
+      margin-bottom: 1rem;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #e85020;
+    }
+
+    .form-select option { background: #1c1c1c; }
+
+    .form-button {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      background: #e85020;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.93rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .form-button:hover:not(:disabled) { background: #c94018; }
+    .form-button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ===== REPORT LIGHT SURFACE ===== */
+    /* The JS-generated report preview must stay white/light (it's a PDF mockup).
+       Scope light CSS variables so the JS output renders correctly. */
+    .report-light {
+      --primary: #2563eb;
+      --accent: #10b981;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-900: #111827;
+    }
+
+    /* Loading spinner */
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== FORMAT CARDS ===== */
+    .format-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .format-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .format-card.blue { border-top: 3px solid #3b82f6; }
+    .format-card.green { border-top: 3px solid #4ade80; }
+    .format-card.amber { border-top: 3px solid #f59e0b; }
+
+    .format-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+
+    .format-card p {
+      font-size: 0.88rem;
+      color: #e0e0e0;
+      line-height: 1.6;
+      margin-bottom: 0.4rem;
+    }
+
+    .format-card p:last-child { opacity: 0.7; }
+
+    /* ===== IRS GRID ===== */
+    .irs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .irs-item {
+      background: #1c1c1c;
+      border: 1px solid #2e2e2e;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.84rem;
+      color: #e0e0e0;
+    }
+
+    /* ===== PM SKILLS ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .skill-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .skill-card.blue { border-left: 3px solid #3b82f6; }
+    .skill-card.green { border-left: 3px solid #4ade80; }
+    .skill-card.amber { border-left: 3px solid #f59e0b; }
+
+    .skill-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .skill-card p {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 5.5rem 1.5rem 4.5rem;
+      border-bottom: 1px solid #252525;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1.5px solid #e85020;
+      color: #e85020;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-bottom: 0.15rem;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 800;
+      color: #e85020;
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-desc {
+      font-size: 0.97rem;
+      color: #888;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px solid #3a3a3a;
+      color: #e0e0e0;
+      background: transparent;
+      padding: 0.55rem 1.15rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .hero-btn:hover {
+      border-color: #666;
+      background: #1e1e1e;
+    }
+
+    /* ===== FOOTER ===== */
+    .home-footer {
+      border-top: 1px solid #252525;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .home-footer a {
+      color: #e85020;
+    }
+
+    .home-footer a:hover { text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 700px) {
+      .format-grid { grid-template-columns: 1fr 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .home-nav { padding: 0.85rem 1rem; }
+      .home-nav-links { gap: 1rem; }
+      .page { padding: 2rem 1rem 4rem; }
+      .user-grid { grid-template-columns: 1fr; }
+      .outcome-stats { grid-template-columns: 1fr; }
+      .format-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="home-nav">
+    <a href="/" class="home-nav-brand">Hector M</a>
+    <div class="home-nav-links">
+      <a href="/">Home</a>
+      <a href="/smart-home">Smart Home</a>
+      <a href="/property-analytics" class="active">Rental Reports</a>
+      <a href="/job-search">Job Search</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <span class="hero-badge">Case Study · Data Product</span>
+    <h1>Property Management Reporter</h1>
+    <p class="hero-tagline">PDF → AI → Tax-Ready Report</p>
+    <p class="hero-desc">I spent 1 hour every month manually reconciling rental statements from 3 different property managers. Now I drag a PDF into a browser and the report is done in under a minute — ready for my accountant at tax time.</p>
+    <div class="hero-actions">
+      <a href="/" class="hero-btn">← All projects</a>
+    </div>
+  </section>
+
+  <!-- ===== PAGE ===== -->
+  <div class="page">
+
+    <!-- ── THE PROBLEM ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">The Problem</p>
+      <div class="dark-card">
+        <p>I own 6 rental properties managed by 3 different companies. Every month, 3 PDF statements arrive — each formatted differently, each using different category names, each requiring manual reconciliation before anything useful can be done with the data.</p>
+        <p>The real problem wasn't just my time. It was that my accountant needed IRS-standard categories and I needed cash-flow visibility. Two users. Two completely different outputs. One messy manual process serving neither of them well.</p>
+      </div>
+    </section>
+
+    <!-- ── USERS & WHAT I LEARNED ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Users &amp; What I Learned</p>
+      <div class="user-grid">
+        <div class="user-card">
+          <div class="user-card-label">Primary User</div>
+          <div class="user-card-name">Me — property owner</div>
+          <p>Wants monthly net income per property at a glance. Doesn't care about line-item detail. Needs speed — not a 2-hour Saturday job.</p>
+        </div>
+        <div class="user-card">
+          <div class="user-card-label">Secondary User</div>
+          <div class="user-card-name">My accountant</div>
+          <p>Needs every expense mapped to one of 15 IRS categories. Consistent format across all 6 properties. Totals she can verify without calling me.</p>
+        </div>
+      </div>
+      <div class="insight">
+        <p><strong>Key insight from user research:</strong> The accountant is the end user of my output. Designing for her needs first — IRS categories, professional PDF, verifiable totals — made the product actually useful, not just faster for me.</p>
+      </div>
+    </section>
+
+    <!-- ── DECISIONS ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Decisions I Made and Why</p>
+      <div class="decision-card">
+        <div class="decision-title">PDF output over spreadsheet</div>
+        <p>My accountant works from PDFs — not Excel. Building a spreadsheet export would've optimized for my comfort, not her workflow. A structured PDF meant she could use it immediately, no conversion step needed.</p>
+      </div>
+      <div class="decision-card">
+        <div class="decision-title">3-agent pipeline over a single prompt</div>
+        <p>A single monolithic prompt produced hallucinated totals I couldn't catch. Splitting into extract → normalize → report meant I could validate accuracy at each step before anything hit the final output.</p>
+      </div>
+      <div class="decision-card">
+        <div class="decision-title">IRS categories as the canonical schema</div>
+        <p>Each property manager used their own terminology. Rather than preserving it, I normalized everything to IRS Schedule E categories. This made every report tax-ready by default and eliminated the back-and-forth with my accountant about what each line item meant.</p>
+      </div>
+    </section>
+
+    <!-- ── OUTCOMES ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Outcomes</p>
+      <div class="outcome-stats">
+        <div class="stat-box">
+          <div class="stat-number">&lt; 1 min</div>
+          <div class="stat-label">per statement<br>(was 1 hr/month manually)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">6</div>
+          <div class="stat-label">Properties processed across<br>3 statement formats</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Manual data entry<br>steps remaining</div>
+        </div>
+      </div>
+      <div class="dark-card">
+        <p>I download the statement PDF from each property management portal, drag it into the upload page, and the report is generated in under a minute. At year-end, I hand my tax accountant 6 individual PDFs — one per property, covering all 12 months of revenue and expenses, already mapped to IRS categories. No spreadsheets, no manual data entry, no prep work.</p>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <!-- ── PIPELINE (full-bleed) ── -->
+  <section class="pipeline-section">
+    <div style="max-width: 960px; margin: 0 auto; padding: 0 2.5rem;">
+      <p class="micro-label">3-Agent Processing Pipeline</p>
+      <p class="section-desc">Behind every report is an AI pipeline that extracts data, standardises format, and generates professional output.</p>
+      <div class="pipeline-track">
+        <div class="pipeline-node">
+          <div class="pipeline-icon input">📋</div>
+          <strong>PDF Upload</strong>
+          <span>Statement input</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon agent">1</div>
+          <strong>Extract</strong>
+          <span>Parse PDF</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon agent">2</div>
+          <strong>Normalize</strong>
+          <span>Standardise data</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon output">3</div>
+          <strong>Report</strong>
+          <span>Generate PDF</span>
+        </div>
+      </div>
+      <div class="pipeline-callout">
+        <strong>Pipeline:</strong> Upload statement → Agent 1 parses PDF and extracts transactions → Agent 2 normalises to standardised JSON with IRS categories → Agent 3 generates professional tax-ready PDF with monthly breakdown and totals.
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+
+    <!-- ── DEMO ── -->
+    <section class="form-section">
+      <p class="micro-label">Try the Demo</p>
+      <p class="section-desc">Select a property to see a preview that matches the actual PDF output — same layout, same data structure. Property names are changed; numbers are representative.</p>
+
+      <label class="form-label" for="propertySelect">Select Property</label>
+      <select id="propertySelect" class="form-select" onchange="document.getElementById('processButton').disabled = !this.value">
+        <option value="">-- Choose a property --</option>
+        <option value="4521 Maple Ridge Drive, Austin, TX">4521 Maple Ridge Drive, Austin, TX — HomeRiver Group</option>
+        <option value="8734 Oakwood Court, Nashville, TN">8734 Oakwood Court, Nashville, TN — Fox Rental Management</option>
+      </select>
+
+      <button type="button" class="form-button" id="processButton" onclick="processProperty()" disabled>
+        Process &amp; Generate Report
+      </button>
+
+      <!-- Results - wrapped in .report-light so JS-generated light styles work -->
+      <div id="results" class="report-light" style="margin-top: 2rem;"></div>
+    </section>
+
+    <!-- ── SUPPORTED FORMATS ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Supported Statement Formats</p>
+      <div class="format-grid">
+        <div class="format-card blue">
+          <h3>🏢 HomeRiver Group</h3>
+          <p>Multi-property statements with transaction-level detail.</p>
+          <p>Format: Property header + transaction rows (income/expenses)</p>
+        </div>
+        <div class="format-card green">
+          <h3>🏠 Fox Rental Management</h3>
+          <p>Single-property statements with summary format.</p>
+          <p>Format: Month-by-month columns, category rows</p>
+        </div>
+        <div class="format-card amber">
+          <h3>📋 Bailey-Foristell</h3>
+          <p>Multi-property summary with categorised expenses.</p>
+          <p>Format: Property section + expense breakdown</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── IRS CATEGORIES ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">15 IRS Schedule E Expense Categories</p>
+      <div class="irs-grid">
+        <div class="irs-item">1. Advertising</div>
+        <div class="irs-item">2. Auto &amp; Travel</div>
+        <div class="irs-item">3. Cleaning &amp; Maintenance</div>
+        <div class="irs-item">4. Commissions</div>
+        <div class="irs-item">5. Insurance</div>
+        <div class="irs-item">6. Legal &amp; Professional</div>
+        <div class="irs-item">7. Management Fees</div>
+        <div class="irs-item">8. Mortgage Interest</div>
+        <div class="irs-item">9. Other Interest</div>
+        <div class="irs-item">10. Repairs</div>
+        <div class="irs-item">11. Supplies</div>
+        <div class="irs-item">12. Taxes &amp; Licenses</div>
+        <div class="irs-item">13. Utilities</div>
+        <div class="irs-item">14. Depreciation</div>
+        <div class="irs-item">15. HOA Dues</div>
+      </div>
+    </section>
+
+    <!-- ── PM SKILLS ── -->
+    <section>
+      <p class="micro-label">Why This Demonstrates PM Skills</p>
+      <div class="skills-grid">
+        <div class="skill-card blue">
+          <h3>📊 AI + Data Discipline</h3>
+          <p>A 3-agent pipeline automates the messy parts (parsing, extraction, categorisation). But the system is only valuable because it solves a real user problem with rigorous data validation.</p>
+        </div>
+        <div class="skill-card green">
+          <h3>👥 Secondary User Research</h3>
+          <p>Primary user: property owner. Secondary user: accountant. Both need different things — surfaced through actual interviews, not assumptions.</p>
+        </div>
+        <div class="skill-card amber">
+          <h3>✅ Quality Assurance</h3>
+          <p>100% accuracy validation against source data. Not just "it works" — verified and tested on 6 real properties across 3 statement formats.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="home-footer">
+    Built by Hector Moran · <a href="mailto:hmoran@me.com">hmoran@me.com</a>
+  </footer>
+
+  <script src="/js/property-analytics.js"></script>
+</body>
+</html>

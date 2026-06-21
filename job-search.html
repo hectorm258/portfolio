@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Search Intelligence – Hector Moran</title>
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #161616;
+      color: #f0f0f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== NAV ===== */
+    .home-nav {
+      background: #111;
+      border-bottom: 1px solid #252525;
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .home-nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e85020;
+    }
+
+    .home-nav-links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .home-nav-links a {
+      color: #777;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .home-nav-links a:hover,
+    .home-nav-links a.active {
+      color: #f0f0f0;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 5.5rem 1.5rem 4.5rem;
+      border-bottom: 1px solid #252525;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1.5px solid #e85020;
+      color: #e85020;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-bottom: 0.15rem;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 800;
+      font-style: italic;
+      color: #e85020;
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-desc {
+      font-size: 0.97rem;
+      color: #888;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px solid #3a3a3a;
+      color: #e0e0e0;
+      background: transparent;
+      padding: 0.55rem 1.15rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .hero-btn:hover {
+      border-color: #666;
+      background: #1e1e1e;
+    }
+
+    /* ===== PAGE CONTAINER ===== */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 5rem;
+    }
+
+    /* ===== SECTION LABELS ===== */
+    .micro-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #e85020;
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+
+    /* ===== DARK CARD / PROSE ===== */
+    .dark-card {
+      margin-bottom: 1rem;
+    }
+
+    .dark-card p {
+      font-size: 0.97rem;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+
+    .dark-card p + p { margin-top: 0.85rem; }
+
+    /* ===== QUOTE BLOCK ===== */
+    .quote-block {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .quote-block p {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: #e0e0e0;
+      line-height: 1.75;
+    }
+
+    /* ===== INSIGHT CALLOUT ===== */
+    .insight {
+      border-left: 3px solid #e85020;
+      background: rgba(232, 80, 32, 0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .insight-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e85020;
+      margin-bottom: 0.45rem;
+    }
+
+    .insight p {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.75;
+    }
+
+    .insight strong { color: #fff; }
+
+    /* ===== DECISION CARDS ===== */
+    .decision-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .decision-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .decision-card p {
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+
+    /* ===== FUNNEL STATS ===== */
+    .funnel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .funnel-stat {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .funnel-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #e85020;
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+
+    .funnel-label {
+      font-size: 0.82rem;
+      color: #bbb;
+      line-height: 1.4;
+      margin-bottom: 0.4rem;
+    }
+
+    .funnel-cvr {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.25);
+      border-radius: 999px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* ===== COMPANY PILLS ===== */
+    .company-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
+    .pill-proptech  { color: #fb923c; border-color: rgba(251,146,60,0.35);  background: rgba(251,146,60,0.07); }
+    .pill-ai        { color: #60a5fa; border-color: rgba(96,165,250,0.35);   background: rgba(96,165,250,0.07); }
+    .pill-fintech   { color: #a78bfa; border-color: rgba(167,139,250,0.35);  background: rgba(167,139,250,0.07); }
+    .pill-enterprise{ color: #4ade80; border-color: rgba(74,222,128,0.35);   background: rgba(74,222,128,0.07); }
+    .pill-multifamily{ color: #f9a8d4; border-color: rgba(249,168,212,0.35); background: rgba(249,168,212,0.07); }
+
+    /* ===== PIPELINE SECTION (full-bleed) ===== */
+    .pipeline-section {
+      background: #111;
+      border-top: 1px solid #252525;
+      border-bottom: 1px solid #252525;
+      padding: 3rem 0;
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .pipeline-track {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .pipeline-node {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .pipeline-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.6rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .pipeline-icon.scan    { background: rgba(232,80,32,0.12);   color: #e85020; border: 1px solid rgba(232,80,32,0.3); }
+    .pipeline-icon.track   { background: rgba(96,165,250,0.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+    .pipeline-icon.monitor { background: rgba(251,146,60,0.12);  color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .pipeline-icon.alert   { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+    .pipeline-icon.report  { background: rgba(74,222,128,0.12);  color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+
+    .pipeline-node strong {
+      display: block;
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-bottom: 0.2rem;
+    }
+
+    .pipeline-node span {
+      font-size: 0.72rem;
+      color: #777;
+    }
+
+    .pipeline-arrow {
+      color: #333;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .pipeline-callout {
+      margin-top: 1.5rem;
+      border-left: 3px solid #60a5fa;
+      background: rgba(96,165,250,0.07);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      font-size: 0.92rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    .pipeline-callout strong { color: #fff; }
+
+    /* ===== DEMO ===== */
+    .demo-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .demo-stage {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 1rem;
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 999px;
+      color: #888;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .demo-stage:hover {
+      border-color: #444;
+      color: #ccc;
+    }
+
+    .demo-stage.active {
+      background: #e85020;
+      border-color: #e85020;
+      color: #fff;
+    }
+
+    .demo-count {
+      background: rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 0.1rem 0.45rem;
+      font-size: 0.72rem;
+    }
+
+    .demo-stage.active .demo-count {
+      background: rgba(255,255,255,0.25);
+    }
+
+    .app-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.15s;
+    }
+
+    .app-card:hover { border-color: #3a3a3a; }
+
+    .app-card-left  { flex: 1; min-width: 0; }
+
+    .app-company {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .app-role {
+      font-size: 0.88rem;
+      color: #aaa;
+      margin-bottom: 0.65rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .app-notes {
+      font-size: 0.82rem;
+      color: #666;
+      margin-top: 0.6rem;
+      line-height: 1.55;
+    }
+
+    .app-card-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .status-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .status-applied    { color: #60a5fa; border-color: rgba(96,165,250,0.35);  background: rgba(96,165,250,0.08); }
+    .status-phone_screen { color: #fb923c; border-color: rgba(251,146,60,0.35); background: rgba(251,146,60,0.08); }
+    .status-interview  { color: #4ade80; border-color: rgba(74,222,128,0.35);  background: rgba(74,222,128,0.08); }
+    .status-rejected   { color: #666;    border-color: rgba(102,102,102,0.35); background: rgba(102,102,102,0.05); }
+    .status-closed_req { color: #a78bfa; border-color: rgba(167,139,250,0.35); background: rgba(167,139,250,0.08); }
+
+    .resume-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: #252525;
+      color: #777;
+      border: 1px solid #333;
+    }
+
+    .days-badge {
+      font-size: 0.75rem;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .hm-text {
+      font-size: 0.78rem;
+      color: #666;
+    }
+
+    /* ===== PM SKILLS ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .skill-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .skill-card.blue  { border-left: 3px solid #3b82f6; }
+    .skill-card.green { border-left: 3px solid #4ade80; }
+    .skill-card.amber { border-left: 3px solid #f59e0b; }
+
+    .skill-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.65rem;
+    }
+
+    .skill-card p {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      line-height: 1.65;
+    }
+
+    /* ===== FOOTER ===== */
+    .home-footer {
+      border-top: 1px solid #252525;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .home-footer a { color: #e85020; }
+    .home-footer a:hover { text-decoration: underline; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 700px) {
+      .funnel-grid  { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid  { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .home-nav { padding: 0.85rem 1rem; }
+      .home-nav-links { gap: 1rem; }
+      .page { padding: 2rem 1rem 4rem; }
+      .funnel-grid  { grid-template-columns: 1fr 1fr; }
+      .skills-grid  { grid-template-columns: 1fr; }
+      .app-card { flex-direction: column; }
+      .app-card-right { flex-direction: row; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav class="home-nav">
+    <a href="/" class="home-nav-brand">Hector M</a>
+    <div class="home-nav-links">
+      <a href="/">Home</a>
+      <a href="/smart-home">Smart Home</a>
+      <a href="/property-analytics">Rental Reports</a>
+      <a href="/job-search" class="active">Job Search</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <span class="hero-badge">Intelligence Product · Case Study</span>
+    <h1>Job Search Intelligence</h1>
+    <p class="hero-tagline">Application tracking. One coordinated system.</p>
+    <p class="hero-desc">
+      I coordinated my job search like a product launch — building a system to track
+      target companies, monitor the pipeline, automate daily role scans, and measure conversion at every stage.
+    </p>
+    <div class="hero-actions">
+      <a href="/" class="hero-btn">← All projects</a>
+    </div>
+  </section>
+
+  <!-- ===== PAGE BLOCK 1: Problem + Decisions ===== -->
+  <div class="page">
+
+    <!-- ── THE PROBLEM ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">The Problem</p>
+      <div class="quote-block">
+        <p>"I submitted applications with no system behind them. No visibility into which companies I was targeting, when I'd applied, who I'd followed up with, or what my conversion rate was. I was flying blind."</p>
+      </div>
+      <div class="insight">
+        <div class="insight-label">The Real Insight</div>
+        <p><strong>A job search is a sales funnel.</strong> You need a CRM, not a spreadsheet. The moment I stopped managing it as a task list and started managing it as a pipeline — applications became top-of-funnel, not the goal. Conversion rate became the metric that mattered.</p>
+      </div>
+    </section>
+
+    <!-- ── DECISIONS ── -->
+    <section>
+      <p class="micro-label">Decisions I Made and Why</p>
+
+      <div class="decision-card">
+        <div class="decision-title">Target Companies, Not Unlimited</div>
+        <p>Focused targeting beats shotgun applications. I built a curated list of companies across PropTech, AI, Fintech, and Enterprise SaaS — every one chosen because my background gave me a genuine edge. Started with 15 priority targets, expanded to 31 across tiers. Depth over breadth changes the entire dynamic.</p>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-title">Conversion Metrics, Not Application Count</div>
+        <p>Most job seekers optimise for applications sent. I built the system around conversion rates at each stage: applied → screen → interview → offer. That single decision changes what you optimise for entirely — and surfaced where the real drop-off was happening.</p>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-title">Daily Role Scans, Not Weekly Check-ins</div>
+        <p>Roles get posted and filled in 48–72 hours. An automated daily scan across all 31 target companies meant I could apply on day 1, before the volume of applicants made it impossible to stand out. First-mover advantage is real in job searching.</p>
+      </div>
+
+      <div class="decision-card">
+        <div class="decision-title">2-Week Follow-up Cadence, Not Ad Hoc</div>
+        <p>Systematic follow-up is the single highest-ROI action in a job search. I built automated reminders at 2-week intervals so no application ever went silent without intentional follow-up. Structured cadence reduces decision fatigue and creates consistent, deliberate touchpoints with hiring teams — not sporadic check-ins.</p>
+      </div>
+    </section>
+
+  </div><!-- /page block 1 -->
+
+  <!-- ===== HOW IT WORKS (full-bleed) ===== -->
+  <section class="pipeline-section">
+    <div style="max-width: 960px; margin: 0 auto; padding: 0 2.5rem;">
+      <p class="micro-label">How It Works</p>
+      <p class="section-desc">Behind every coordinated search is a system that runs automatically — scanning, tracking, alerting, and reporting so I can focus on quality conversations, not logistics.</p>
+      <div class="pipeline-track">
+        <div class="pipeline-node">
+          <div class="pipeline-icon scan">🔍</div>
+          <strong>Daily Role Scan</strong>
+          <span>All 31 companies</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon track">📋</div>
+          <strong>Track Applications</strong>
+          <span>Date, resume, notes</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon monitor">📈</div>
+          <strong>Monitor Pipeline</strong>
+          <span>Stage tracking</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon alert">🔔</div>
+          <strong>Alert Follow-ups</strong>
+          <span>2-week cadence</span>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node">
+          <div class="pipeline-icon report">📊</div>
+          <strong>Report Metrics</strong>
+          <span>CVR at each stage</span>
+        </div>
+      </div>
+      <div class="pipeline-callout">
+        <strong>System loop:</strong> Daily scan surfaces new roles → Applications logged with resume version and date → Pipeline stage updated on each response → Automated follow-up reminders fire at 2-week intervals → Conversion metrics update in real time across the funnel.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAGE BLOCK 2: Funnel + Demo + Companies + Skills ===== -->
+  <div class="page">
+
+    <!-- ── FUNNEL ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">The Funnel — Live Metrics</p>
+      <div class="funnel-grid">
+        <div class="funnel-stat">
+          <div class="funnel-number">19</div>
+          <div class="funnel-label">Tracked</div>
+        </div>
+        <div class="funnel-stat">
+          <div class="funnel-number">2</div>
+          <div class="funnel-label">Phone Screens</div>
+          <div class="funnel-cvr">10.5% conversion</div>
+        </div>
+        <div class="funnel-stat">
+          <div class="funnel-number">2</div>
+          <div class="funnel-label">Interviews</div>
+          <div class="funnel-cvr">100% conversion</div>
+        </div>
+        <div class="funnel-stat">
+          <div class="funnel-number">0</div>
+          <div class="funnel-label">Offers</div>
+          <div class="funnel-cvr" style="color:#888;border-color:rgba(136,136,136,0.35);background:rgba(136,136,136,0.07);">Active</div>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="insight-label">What the Data Told Me</div>
+        <p>A <strong>10.5% screen rate is within industry average (8–12%)</strong> — but the standout signal is <strong>100% screen-to-interview conversion rate</strong>: every company that scheduled a screen progressed to formal interviews. The top of the funnel is the current focus — increasing screen rate through tighter role targeting and resume version matching. The system is working; volume needs to increase.</p>
+      </div>
+    </section>
+
+    <!-- ── TRY THE DEMO ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Try the Demo</p>
+      <p style="font-size:0.95rem;color:#888;line-height:1.7;margin-bottom:1.5rem;">Filter the live pipeline by stage. This mirrors the actual dashboard used to track and manage every application.</p>
+
+      <div class="demo-filters">
+        <button class="demo-stage active" data-filter="all"          onclick="filterApps('all')">All <span class="demo-count">6</span></button>
+        <button class="demo-stage"        data-filter="applied"      onclick="filterApps('applied')">Applied <span class="demo-count">2</span></button>
+        <button class="demo-stage"        data-filter="phone_screen" onclick="filterApps('phone_screen')">Phone Screen <span class="demo-count">1</span></button>
+        <button class="demo-stage"        data-filter="interview"    onclick="filterApps('interview')">Interview <span class="demo-count">1</span></button>
+        <button class="demo-stage"        data-filter="rejected"     onclick="filterApps('rejected')">Rejected <span class="demo-count">2</span></button>
+      </div>
+
+      <div id="demoAppList"></div>
+    </section>
+
+    <!-- ── TARGET COMPANIES ── -->
+    <section style="margin-bottom: 3rem;">
+      <p class="micro-label">Target Companies</p>
+      <div class="dark-card" style="margin-bottom: 1.25rem;">
+        <p>31 companies selected across PropTech, AI, Enterprise SaaS, Fintech, and Multifamily — chosen for domain fit, team quality, and alignment with my background in listing platforms, transaction infrastructure, and AI-native products.</p>
+      </div>
+      <div class="company-pills">
+        <span class="pill pill-proptech">Zillow</span>
+        <span class="pill pill-proptech">Redfin</span>
+        <span class="pill pill-proptech">Opendoor</span>
+        <span class="pill pill-proptech">Qualia</span>
+        <span class="pill pill-proptech">Realtor.com</span>
+        <span class="pill pill-proptech">CoreLogic</span>
+        <span class="pill pill-proptech">CoStar</span>
+        <span class="pill pill-proptech">Matterport</span>
+        <span class="pill pill-proptech">First American</span>
+        <span class="pill pill-proptech">Roofstock</span>
+        <span class="pill pill-proptech">Knock</span>
+        <span class="pill pill-ai">Anthropic</span>
+        <span class="pill pill-ai">OpenAI</span>
+        <span class="pill pill-fintech">Stripe</span>
+        <span class="pill pill-fintech">Mercury</span>
+        <span class="pill pill-fintech">Blend Labs</span>
+        <span class="pill pill-fintech">Proof</span>
+        <span class="pill pill-enterprise">ServiceNow</span>
+        <span class="pill pill-enterprise">Salesforce</span>
+        <span class="pill pill-enterprise">DocuSign</span>
+        <span class="pill pill-multifamily">RPM Living</span>
+        <span class="pill pill-proptech">Juniper Square</span>
+        <span class="pill pill-proptech">Luxury Presence</span>
+        <span class="pill pill-fintech">Apploi</span>
+        <span class="pill pill-enterprise">Elevate Services</span>
+        <span class="pill pill-proptech">HomeSpotter</span>
+        <span class="pill pill-fintech">Divvy</span>
+        <span class="pill pill-proptech">TitleVest</span>
+      </div>
+    </section>
+
+    <!-- ── PM SKILLS ── -->
+    <section>
+      <p class="micro-label">Why This Demonstrates PM Skills</p>
+      <div class="skills-grid">
+        <div class="skill-card blue">
+          <h3>📊 Systems Thinking</h3>
+          <p>Reframing the job search as a sales pipeline with measurable conversion rates at each stage — not a task list. Same mental model a PM uses to build product funnels.</p>
+        </div>
+        <div class="skill-card green">
+          <h3>🤖 Build vs Buy Decisions</h3>
+          <p>Automated daily role scans, follow-up cadence tracking, and pipeline metrics — scoped, built, and iterated on quickly. Bias toward building tools that create compounding leverage.</p>
+        </div>
+        <div class="skill-card amber">
+          <h3>🎯 Data-Driven Prioritisation</h3>
+          <p>The funnel metrics didn't just track progress — they identified the bottleneck and pointed to the next iteration. Data as a decision-making input, not a vanity metric.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page block 2 -->
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="home-footer">
+    Built by Hector Moran · <a href="mailto:hmoran@me.com">hmoran@me.com</a>
+  </footer>
+
+  <script>
+    const demoApps = [
+      {
+        company: "JLL",
+        role: "Lead AI Solutions — Product Manager",
+        status: "interview",
+        dateApplied: "2026-05-01",
+        resumeUsed: "C",
+        hiringManager: "Patrick Leiser — Director of Product",
+        notes: "3 rounds: phone screen → behavioral → panel interview. Req closed — not a rejection. Recruiter will follow up when role reopens in fall 2026."
+      },
+      {
+        company: "Zumper",
+        role: "Product Manager",
+        status: "phone_screen",
+        dateApplied: "2026-05-10",
+        resumeUsed: "A",
+        hiringManager: "Max Ildari — Sr Director of Product",
+        notes: "Phone screen + behavioral interview completed. Awaiting final response."
+      },
+      {
+        company: "Zillow",
+        role: "Sr PM, Search Intelligence",
+        status: "rejected",
+        dateApplied: "2026-05-01",
+        resumeUsed: "A",
+        hiringManager: null,
+        notes: "Standard rejection — moved forward with other candidates."
+      },
+      {
+        company: "Qualia",
+        role: "Sr PM, Marketplace",
+        status: "applied",
+        dateApplied: "2026-05-01",
+        resumeUsed: "B",
+        hiringManager: null,
+        notes: "Title/escrow SaaS — strong domain fit. Awaiting first contact."
+      },
+      {
+        company: "RPM Living",
+        role: "Product Manager",
+        status: "applied",
+        dateApplied: "2026-06-09",
+        resumeUsed: "A",
+        hiringManager: "Scott Pechersky — CTO",
+        notes: "Custom-tailored resume (ATS score 98%). Warm outreach to CTO drafted. #6 NMHC multifamily company."
+      },
+      {
+        company: "Experian",
+        role: "Sr PM — Home Ownership",
+        status: "rejected",
+        dateApplied: "2026-04-30",
+        resumeUsed: "C",
+        hiringManager: null,
+        notes: "Role cancelled by company — not a traditional rejection."
+      }
+    ];
+
+    const statusLabels = {
+      applied:      "Applied",
+      phone_screen: "Phone Screen",
+      interview:    "Interview",
+      rejected:     "Rejected",
+      closed_req:   "Req Closed"
+    };
+
+    const resumeLabels = {
+      A: "Resume A · PropTech",
+      B: "Resume B · Transaction",
+      C: "Resume C · Enterprise / AI"
+    };
+
+    function getDaysElapsed(dateApplied) {
+      const diff = Math.floor((new Date('2026-06-21') - new Date(dateApplied)) / 86400000);
+      return diff === 1 ? '1 day ago' : `${diff}d ago`;
+    }
+
+    function renderApps(filter) {
+      const list = document.getElementById('demoAppList');
+      const filtered = filter === 'all' ? demoApps : demoApps.filter(a => a.status === filter);
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:2rem;color:#444;font-size:0.9rem;">No applications in this stage.</div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(app => {
+        const hmHtml = app.hiringManager
+          ? `<span class="hm-text">👤 ${app.hiringManager}</span>`
+          : `<span class="hm-text" style="color:#3a3a3a;">No hiring manager logged</span>`;
+
+        return `
+          <div class="app-card">
+            <div class="app-card-left">
+              <div class="app-company">${app.company}</div>
+              <div class="app-role">${app.role}</div>
+              <div class="app-meta">
+                <span class="status-badge status-${app.status}">${statusLabels[app.status] || app.status}</span>
+                <span class="resume-badge">${resumeLabels[app.resumeUsed]}</span>
+                ${hmHtml}
+              </div>
+              <div class="app-notes">${app.notes}</div>
+            </div>
+            <div class="app-card-right">
+              <span class="days-badge">${getDaysElapsed(app.dateApplied)}</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function filterApps(filter) {
+      document.querySelectorAll('.demo-stage').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      renderApps(filter);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => renderApps('all'));
+  </script>
+
+</body>
+</html>

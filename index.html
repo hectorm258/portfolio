@@ -1,520 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hector Moran — Product Leader in PropTech & AI</title>
-<meta name="description" content="Director-level Product Manager with 15+ years in PropTech, MLS integrations, title & escrow, and AI-powered product development.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #1a1a2e;
-    --ink-soft: #4a4a5e;
-    --ink-muted: #8888a0;
-    --surface: #faf9f7;
-    --surface-warm: #f3f0eb;
-    --accent: #2d5a3d;
-    --accent-light: #e8f0eb;
-    --accent-hover: #1e3d2a;
-    --border: #e0ddd8;
-    --white: #ffffff;
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body: 'DM Sans', -apple-system, sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hector Moran – Product · AI · Automation</title>
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #161616;
+      color: #f0f0f0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  html { scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
 
-  body {
-    font-family: var(--font-body);
-    color: var(--ink);
-    background: var(--surface);
-    line-height: 1.65;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-  }
+    /* ===== NAV ===== */
+    .home-nav {
+      background: #111;
+      border-bottom: 1px solid #252525;
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-  /* ── Nav ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(250, 249, 247, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: box-shadow 0.3s;
-  }
-  nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
-  .nav-inner {
-    max-width: 1080px; margin: 0 auto;
-    padding: 14px 32px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .nav-name {
-    font-family: var(--font-display); font-weight: 500;
-    font-size: 18px; color: var(--ink); text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 28px; }
-  .nav-links a {
-    font-size: 14px; font-weight: 500; color: var(--ink-soft);
-    text-decoration: none; letter-spacing: 0.02em;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
+    .home-nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e85020;
+      text-decoration: none;
+    }
 
-  /* ── Hero ── */
-  .hero {
-    padding: 160px 32px 100px;
-    max-width: 1080px; margin: 0 auto;
-  }
-  .hero-label {
-    font-size: 13px; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--accent);
-    margin-bottom: 20px;
-    opacity: 0; animation: fadeUp 0.6s ease forwards 0.1s;
-  }
-  .hero h1 {
-    font-family: var(--font-display); font-weight: 300;
-    font-size: clamp(36px, 5vw, 56px); line-height: 1.15;
-    color: var(--ink); max-width: 780px;
-    margin-bottom: 28px;
-    opacity: 0; animation: fadeUp 0.6s ease forwards 0.25s;
-  }
-  .hero h1 em {
-    font-style: italic; font-weight: 500; color: var(--accent);
-  }
-  .hero-sub {
-    font-size: 18px; line-height: 1.7; color: var(--ink-soft);
-    max-width: 620px;
-    opacity: 0; animation: fadeUp 0.6s ease forwards 0.4s;
-  }
+    .home-nav-links {
+      display: flex;
+      gap: 1.75rem;
+    }
 
-  /* ── Domain strip ── */
-  .domains {
-    max-width: 1080px; margin: 0 auto;
-    padding: 0 32px 80px;
-    opacity: 0; animation: fadeUp 0.6s ease forwards 0.55s;
-  }
-  .domain-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px;
-    overflow: hidden;
-  }
-  .domain-card {
-    background: var(--white); padding: 24px 22px;
-    transition: background 0.2s;
-  }
-  .domain-card:hover { background: var(--accent-light); }
-  .domain-card .label {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
-  }
-  .domain-card .desc {
-    font-size: 14px; color: var(--ink-soft); line-height: 1.55;
-  }
+    .home-nav-links a {
+      color: #777;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
 
-  /* ── Section shared ── */
-  section { padding: 80px 32px; }
-  .section-inner { max-width: 1080px; margin: 0 auto; }
-  .section-label {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-  }
-  .section-title {
-    font-family: var(--font-display); font-weight: 300;
-    font-size: clamp(28px, 3.5vw, 40px); line-height: 1.2;
-    margin-bottom: 48px; max-width: 600px;
-  }
+    .home-nav-links a:hover,
+    .home-nav-links a.active {
+      color: #f0f0f0;
+    }
 
-  /* ── Case Studies ── */
-  #work { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 5.5rem 1.5rem 4.5rem;
+      border-bottom: 1px solid #252525;
+    }
 
-  .case-study {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-    align-items: start; padding: 48px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .case-study:last-child { border-bottom: none; }
+    .hero-badge {
+      display: inline-block;
+      border: 1.5px solid #e85020;
+      color: #e85020;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
 
-  .cs-meta .cs-tag {
-    display: inline-block;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--accent);
-    background: var(--accent-light); padding: 4px 12px;
-    border-radius: 20px; margin-bottom: 16px;
-  }
-  .cs-meta h3 {
-    font-family: var(--font-display); font-weight: 500;
-    font-size: 26px; line-height: 1.25; margin-bottom: 14px;
-  }
-  .cs-meta .cs-org {
-    font-size: 14px; color: var(--ink-muted); margin-bottom: 18px;
-  }
-  .cs-meta .cs-summary {
-    font-size: 15px; color: var(--ink-soft); line-height: 1.7;
-  }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      margin-bottom: 0.15rem;
+    }
 
-  .cs-details { padding-top: 8px; }
-  .cs-block { margin-bottom: 28px; }
-  .cs-block h4 {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 8px;
-  }
-  .cs-block p, .cs-block li {
-    font-size: 14.5px; color: var(--ink-soft); line-height: 1.65;
-  }
-  .cs-block ul { list-style: none; padding: 0; }
-  .cs-block ul li { padding-left: 18px; position: relative; margin-bottom: 4px; }
-  .cs-block ul li::before {
-    content: ''; position: absolute; left: 0; top: 9px;
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); opacity: 0.5;
-  }
+    .hero-tagline {
+      font-size: clamp(1.9rem, 5vw, 3.4rem);
+      font-weight: 800;
+      color: #e85020;
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+    }
 
-  .metric-row { display: flex; gap: 32px; margin-top: 20px; }
-  .metric {
-    flex: 1; padding: 16px 0;
-    border-top: 2px solid var(--accent);
-  }
-  .metric .num {
-    font-family: var(--font-display); font-weight: 700;
-    font-size: 28px; color: var(--accent); margin-bottom: 2px;
-  }
-  .metric .lbl {
-    font-size: 12px; color: var(--ink-muted); text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
+    .hero-desc {
+      font-size: 0.97rem;
+      color: #888;
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
 
-  /* ── Prototype ── */
-  .proto-card {
-    background: var(--ink); border-radius: 14px; padding: 48px;
-    color: var(--white); margin-top: 48px;
-    position: relative; overflow: hidden;
-  }
-  .proto-card::before {
-    content: ''; position: absolute; top: -40%; right: -20%;
-    width: 500px; height: 500px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(45,90,61,0.3), transparent 70%);
-  }
-  .proto-card .cs-tag {
-    background: rgba(45,90,61,0.4); color: #8fbf9c;
-  }
-  .proto-card h3 { color: var(--white); }
-  .proto-card .cs-org { color: rgba(255,255,255,0.5); }
-  .proto-card .cs-summary { color: rgba(255,255,255,0.7); }
-  .proto-card .cs-block h4 { color: rgba(255,255,255,0.45); }
-  .proto-card .cs-block p, .proto-card .cs-block li { color: rgba(255,255,255,0.7); }
-  .proto-card .cs-block ul li::before { background: #8fbf9c; opacity: 0.7; }
-  .proto-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; position: relative; z-index: 1; }
-  .proto-card .metric { border-top-color: #8fbf9c; }
-  .proto-card .metric .num { color: #8fbf9c; }
-  .proto-card .metric .lbl { color: rgba(255,255,255,0.45); }
+    .hero-actions {
+      display: flex;
+      gap: 0.65rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-  /* ── About ── */
-  #about { background: var(--surface-warm); border-top: 1px solid var(--border); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-  .about-text p {
-    font-size: 16px; color: var(--ink-soft); line-height: 1.75;
-    margin-bottom: 18px;
-  }
-  .credential-list { list-style: none; padding: 0; }
-  .credential-list li {
-    padding: 14px 0; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-size: 14.5px;
-  }
-  .credential-list .cred-label { font-weight: 600; color: var(--ink); }
-  .credential-list .cred-value { color: var(--ink-muted); text-align: right; }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px solid #3a3a3a;
+      color: #e0e0e0;
+      background: transparent;
+      padding: 0.55rem 1.15rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
 
-  /* ── CTA ── */
-  .cta {
-    text-align: center; padding: 80px 32px;
-    border-top: 1px solid var(--border);
-  }
-  .cta h2 {
-    font-family: var(--font-display); font-weight: 300;
-    font-size: 32px; margin-bottom: 16px;
-  }
-  .cta p { color: var(--ink-soft); margin-bottom: 28px; font-size: 16px; }
-  .cta-btn {
-    display: inline-block; padding: 14px 36px;
-    background: var(--accent); color: var(--white);
-    text-decoration: none; border-radius: 8px;
-    font-weight: 600; font-size: 15px;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .cta-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .hero-btn:hover {
+      border-color: #666;
+      background: #1e1e1e;
+    }
 
-  /* ── Footer ── */
-  footer {
-    text-align: center; padding: 32px;
-    font-size: 13px; color: var(--ink-muted);
-    border-top: 1px solid var(--border);
-  }
+    /* ===== CASE STUDIES SECTION ===== */
+    .case-studies {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 5.5rem;
+    }
 
-  /* ── Animations ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .reveal {
-    opacity: 0; transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #555;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
 
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .case-study, .proto-inner, .about-grid { grid-template-columns: 1fr; gap: 32px; }
-    .hero { padding: 130px 24px 64px; }
-    section { padding: 56px 24px; }
-    .nav-inner { padding: 14px 20px; }
-    .nav-links { gap: 18px; }
-    .nav-links a { font-size: 13px; }
-    .proto-card { padding: 32px 24px; }
-    .metric-row { gap: 20px; }
-  }
-  @media (max-width: 480px) {
-    .domain-grid { grid-template-columns: 1fr 1fr; }
-    .metric-row { flex-direction: column; gap: 12px; }
-  }
-</style>
+    /* ===== CASE CARD ===== */
+    .case-card {
+      background: #1c1c1c;
+      border: 1px solid #272727;
+      border-radius: 14px;
+      padding: 2rem 2rem 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .case-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 0.45rem;
+    }
+
+    .case-subtitle {
+      font-size: 0.83rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* ===== BADGES (also used as links) ===== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1.5px solid;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .badge:hover {
+      opacity: 0.75;
+      transform: translateY(-1px);
+    }
+
+    .badge-live {
+      color: #4ade80;
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.07);
+    }
+
+    .badge-in-use {
+      color: #60a5fa;
+      border-color: #60a5fa;
+      background: rgba(96, 165, 250, 0.07);
+    }
+
+    .badge-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ===== DIVIDER ===== */
+    .case-divider {
+      border: none;
+      border-top: 1px solid #272727;
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    /* ===== CARD BODY ===== */
+    .case-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .micro-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #5a5a5a;
+      text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+
+    .case-body p {
+      font-size: 0.93rem;
+      color: #bbb;
+      line-height: 1.7;
+    }
+
+    /* ===== OUTCOMES ===== */
+    .outcomes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .outcomes-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.93rem;
+      color: #bbb;
+      line-height: 1.55;
+    }
+
+    .outcome-arrow {
+      color: #e85020;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+      font-weight: 700;
+    }
+
+    /* ===== STACK TAGS ===== */
+    .stack-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .stack-tag {
+      font-size: 0.78rem;
+      color: #aaa;
+      border: 1px solid #303030;
+      background: #181818;
+      padding: 0.28rem 0.65rem;
+      border-radius: 5px;
+    }
+
+    /* ===== SCREENSHOT PLACEHOLDER ===== */
+    .screenshot-placeholder {
+      border: 1px dashed #2c2c2c;
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.8rem;
+      color: #555;
+      line-height: 1.55;
+      margin-top: 1.4rem;
+    }
+
+    .screenshot-placeholder strong {
+      color: #777;
+    }
+
+    /* ===== FOOTER ===== */
+    .home-footer {
+      border-top: 1px solid #252525;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    .home-footer a {
+      color: #e85020;
+    }
+
+    .home-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .case-title { font-size: 1.25rem; }
+      .case-header { flex-direction: column; gap: 0.65rem; }
+      .case-card { padding: 1.5rem 1.25rem 1.5rem; }
+      .hero { padding: 4rem 1.25rem 3.5rem; }
+      .home-nav { padding: 0.85rem 1rem; }
+      .home-nav-links { gap: 1rem; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Nav -->
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="#" class="nav-name">Hector Moran</a>
-    <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+  <!-- ===== NAV ===== -->
+  <nav class="home-nav">
+    <a href="/" class="home-nav-brand">Hector M</a>
+    <div class="home-nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/smart-home">Smart Home</a>
+      <a href="/property-analytics">Rental Reports</a>
+      <a href="/job-search">Job Search</a>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- Hero -->
-<header class="hero">
-  <div class="hero-label">Product Management &bull; PropTech &bull; AI</div>
-  <h1>Building products across the <em>full real estate lifecycle</em> — from listing to close.</h1>
-  <p class="hero-sub">Product Manager with 15+ years in PropTech. I have experience in MLS integrations, listing management, title &amp; escrow operations, and AI-powered product development. Currently exploring what's next.</p>
-</header>
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <span class="hero-badge">OpenClaw Projects</span>
+    <h1>Hector Moran</h1>
+    <p class="hero-tagline">Senior Product Manager</p>
+    <p class="hero-desc">I build software tools that solve real problems for myself — then ship them. These are three live projects built end-to-end as a PM without a dev team.</p>
+    <div class="hero-actions">
+      <a href="https://linkedin.com/in/hectormoran" class="hero-btn" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="mailto:hmoran@me.com" class="hero-btn">hmoran@me.com</a>
+    </div>
+  </section>
 
-<!-- Domain expertise strip -->
-<div class="domains">
-  <div class="domain-grid">
-    <div class="domain-card">
-      <div class="label">MLS &amp; Listings</div>
-      <div class="desc">RETS/RESO standards, listing syndication, compliance validation</div>
-    </div>
-    <div class="domain-card">
-      <div class="label">Brokerage Ops</div>
-      <div class="desc">Agent &amp; TC workflows, transaction coordination, compliance</div>
-    </div>
-    <div class="domain-card">
-      <div class="label">Title &amp; Escrow</div>
-      <div class="desc">Title search and settlement workflows</div>
-    </div>
-    <div class="domain-card">
-      <div class="label">AI Products</div>
-      <div class="desc">Agentic architectures, multi-agent pipelines, LLM evaluation, prototype AI systems</div>
-    </div>
-  </div>
-</div>
+  <!-- ===== CASE STUDIES ===== -->
+  <section class="case-studies">
+    <p class="section-label">Case Studies</p>
 
-<!-- Case Studies -->
-<section id="work">
-  <div class="section-inner">
-    <div class="section-label">Selected Work</div>
-    <div class="section-title">Products I've owned end-to-end</div>
-
-    <!-- Case Study 1: Listing Manager -->
-    <div class="case-study reveal">
-      <div class="cs-meta">
-        <div class="cs-tag">Listing Management</div>
-        <h3>Listing Manager</h3>
-        <div class="cs-org">Anywhere Real Estate (now Compass International Holdings) &bull; 2023–2025</div>
-        <p class="cs-summary">A centralized listing platform syndicating listing data to downstream systems and local MLS systems.</p>
-      </div>
-      <div class="cs-details">
-        <div class="cs-block">
-          <h4>The Challenge</h4>
-          <p>Real estate agents spent significant time on manual listing entry across multiple systems and MLS platforms. The goal of Listing Manager was to own the listing data but also reduce duplicate workflows and reduce duplicate data entry and improve data quality.</p>
+    <!-- ── Card 1: Property Management Reporter ── -->
+    <div class="case-card">
+      <div class="case-header">
+        <div>
+          <h2 class="case-title">Property Management Reporter</h2>
+          <p class="case-subtitle">Rental Income Reporting · Node · Express · Claude · PDF</p>
         </div>
-        <div class="cs-block">
-          <h4>What I Did</h4>
-          <ul>
-            <li>Owned full product lifecycle: discovery, PRDs, sprint-ready backlogs, staged pilots, and post-launch iteration</li>
-            <li>Led cross-functional team of ~11 across engineering, QA, UX, and data science</li>
-            <li>Analyzed pilot results (MN showed near-zero agent adoption) and led the pivot to a TC+-supported model</li>
-            <li>Designed the revised adoption strategy that shifted value delivery through transaction coordinators</li>
-            <li>Built OKR frameworks, quarterly roadmaps, and release notes to maintain exec alignment through the pivot</li>
+        <a href="/property-analytics" class="badge badge-live"><span class="badge-dot"></span>Demo ↗</a>
+      </div>
+      <hr class="case-divider">
+      <div class="case-body">
+        <div>
+          <p class="micro-label">The Problem</p>
+          <p>I own 6 rental properties managed by 3 different companies. Every month, 3 PDF statements arrive — each formatted differently, each using different category names — requiring manual reconciliation before anything useful can be done with the data. The real problem: my accountant needed IRS-standard categories and I needed cash-flow visibility. Two users, two completely different outputs, one messy manual process serving neither of them well.</p>
+        </div>
+        <div>
+          <p class="micro-label">What I Built</p>
+          <p>A monthly reporting tool that parses rental PDFs through a 3-agent pipeline (Extract → Normalize → Report), maps every expense to one of 15 IRS Schedule E categories, and generates a professional tax-ready PDF — turning a 1-hour manual job into a one-click report ready for my accountant.</p>
+        </div>
+        <div>
+          <p class="micro-label">Outcomes</p>
+          <ul class="outcomes-list">
+            <li><span class="outcome-arrow">→</span><span>Under 1 minute per statement — down from 1 hour of manual reconciliation every month</span></li>
+            <li><span class="outcome-arrow">→</span><span>6 properties processed across 3 statement formats (HomeRiver, Fox, Bailey-Foristell) with 100% accuracy</span></li>
+            <li><span class="outcome-arrow">→</span><span>Zero manual data entry — accountant receives 6 IRS-ready PDFs at year-end, no back-and-forth</span></li>
           </ul>
         </div>
-        <div class="cs-block">
-          <h4>The Outcome</h4>
-          <p>In the MVP rollout phase, the Transaction Coordinator model was validated in a Florida pilot and informed a scaling strategy for additional markets. The pivot demonstrated product judgment — recognizing when initial assumptions fail and redirecting resources toward a viable adoption path rather than forcing the original thesis. This was a solution until we fully integrated the listing platform to downstream systems.</p>
+        <div>
+          <p class="micro-label">Stack</p>
+          <div class="stack-tags">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Express</span>
+            <span class="stack-tag">Claude AI</span>
+            <span class="stack-tag">PDF Generation</span>
+            <span class="stack-tag">PropTech</span>
+            <span class="stack-tag">Tax Reporting</span>
+          </div>
         </div>
       </div>
+
     </div>
 
-    <!-- Case Study 2: PowerSnap! -->
-    <div class="case-study reveal">
-      <div class="cs-meta">
-        <div class="cs-tag">Title &amp; Escrow</div>
-        <h3>PowerSnap!</h3>
-        <div class="cs-org">Anywhere Real Estate &bull; Transaction Platform</div>
-        <p class="cs-summary">A native app and two-sided transaction management platform connecting external real estate agents with internal escrow offices — featuring market-calibrated closing cost calculators and streamlined order-to-close workflows.</p>
+    <!-- ── Card 2: Smart Home Digest ── -->
+    <div class="case-card">
+      <div class="case-header">
+        <div>
+          <h2 class="case-title">Smart Home Digest</h2>
+          <p class="case-subtitle">PropTech SaaS MVP · Node · Puppeteer · Claude · Telegram</p>
+        </div>
+        <a href="/smart-home" class="badge badge-live"><span class="badge-dot"></span>Demo ↗</a>
       </div>
-      <div class="cs-details">
-        <div class="cs-block">
-          <h4>What I Built</h4>
-          <ul>
-            <li>Agent-facing interface for initiating and tracking escrow orders</li>
-            <li>Market-calibrated closing cost calculators providing accurate fee estimates by geography</li>
-            <li>End-to-end transaction visibility from order placement through close</li>
+      <hr class="case-divider">
+      <div class="case-body">
+        <div>
+          <p class="micro-label">The Problem</p>
+          <p>Zillow and Redfin are built to surface everything. That's great for the platforms — more alerts means more engagement — but it's the wrong product for a buyer who's already overwhelmed. The signal is buried in the noise. Real estate agents solve this with judgment, but agent judgment isn't available at 7am, isn't personalised to your exact criteria, and isn't scalable.</p>
+        </div>
+        <div>
+          <p class="micro-label">What I Built</p>
+          <p>A daily automated digest that scrapes property listings, summarises changes with AI, and delivers a curated briefing directly to Telegram — so I get actionable intelligence in under 60 seconds every morning, without opening a browser.</p>
+        </div>
+        <div>
+          <p class="micro-label">Outcomes</p>
+          <ul class="outcomes-list">
+            <li><span class="outcome-arrow">→</span><span>2 real buyers tested with live profiles — daily Telegram digests running with zero manual steps</span></li>
+            <li><span class="outcome-arrow">→</span><span>7 scoring criteria across budget, location, basics, must-haves, nice-to-haves, schools, and deal-breaker penalties</span></li>
+            <li><span class="outcome-arrow">→</span><span>0–100 transparent score with visible reasoning — buyers see exactly why a home ranked 85 vs 45</span></li>
           </ul>
         </div>
-        <div class="metric-row">
-          <div class="metric">
-            <div class="num">84</div>
-            <div class="lbl">Net Promoter Score</div>
-          </div>
-          <div class="metric">
-            <div class="num">2</div>
-            <div class="lbl">Sides Served (Agents + Escrow)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Prototype: AI Discovery -->
-    <div class="proto-card reveal">
-      <div class="proto-inner">
-        <div class="cs-meta">
-          <div class="cs-tag">Agentic AI &bull; Personal Project</div>
-          <h3>Smart Home Digest AI</h3>
-          <div class="cs-org">Personal Build &bull; 2025–Present &bull; Built during career transition</div>
-          <p class="cs-summary">A personal agentic real estate discovery prototype using a multi-agent AI pipeline — built to deepen hands-on experience with LLM orchestration, evaluation, and production-readiness patterns while transitioning to my next role.</p>
-        </div>
-        <div class="cs-details">
-          <div class="cs-block">
-            <h4>Architecture</h4>
-            <ul>
-              <li>Multi-agent pipeline: data gathering → normalization → scoring → output delivery (Telegram)</li>
-              <li>Built on OpenClaw, an open-source AI agent framework</li>
-              <li>Handles property data scraping, structured evaluation, and personalized recommendations</li>
-            </ul>
-          </div>
-          <div class="cs-block">
-            <h4>Lessons Shipped</h4>
-            <ul>
-              <li>Token cost management and optimization across multi-step agent chains</li>
-              <li>Emergent system architecture — agents producing unexpected but useful interaction patterns</li>
-              <li>Guardrails and evaluation frameworks for real estate data accuracy</li>
-              <li>Working with early design partners to iterate on the MVP</li>
-            </ul>
-          </div>
-          <div class="metric-row">
-            <div class="metric">
-              <div class="num">4</div>
-              <div class="lbl">Agent Pipeline Stages</div>
-            </div>
-            <div class="metric">
-              <div class="num">Prototype</div>
-              <div class="lbl">Design Partner Testing</div>
-            </div>
+        <div>
+          <p class="micro-label">Stack</p>
+          <div class="stack-tags">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Puppeteer</span>
+            <span class="stack-tag">Claude AI</span>
+            <span class="stack-tag">Telegram Bot</span>
+            <span class="stack-tag">PropTech</span>
+            <span class="stack-tag">Automation</span>
           </div>
         </div>
       </div>
+
     </div>
-  </div>
-</section>
 
-<!-- About -->
-<section id="about">
-  <div class="section-inner">
-    <div class="section-label">Background</div>
-    <div class="section-title">Where domain depth meets product craft</div>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>Most product managers in real estate come from either the tech side or the operations side. My career has spanned both. Before moving into product management, I spent nearly 16 years at Cornerstone Title Company as a Technical Training and Implementation Specialist — training escrow officers, agents, and operations teams on title and escrow transaction platforms across the full settlement lifecycle. That operational foundation shaped how I approach product work today.</p>
-        <p>That dual perspective means I can write a PRD that reflects how title and escrow actually closes, understand the complexity of MLS integrations, and have a conversation about agent workflows without losing sight of the broker who needs the feature by next quarter.</p>
-        <p>I led the Listing Manager product at Anywhere Real Estate and managed cross-functional teams of ~11 across engineering, QA, UX, and data science, and built PowerSnap! into a platform that agents genuinely relied on — reflected in an NPS of 84.</p>
-        <p>I'm currently building in the open — shipping an agentic AI prototype, sharing lessons on LinkedIn, and looking for my next role where deep PropTech domain expertise meets the next generation of AI-powered products.</p>
+    <!-- ── Card 3: Job Search Dashboard ── -->
+    <div class="case-card">
+      <div class="case-header">
+        <div>
+          <h2 class="case-title">Job Search Dashboard</h2>
+          <p class="case-subtitle">Intelligence Product · Node · Express · JSON · Conversion Tracking</p>
+        </div>
+        <a href="/job-search" class="badge badge-live"><span class="badge-dot"></span>Demo ↗</a>
       </div>
-      <div>
-        <ul class="credential-list">
-          <li>
-            <span class="cred-label">Most Recent Role</span>
-            <span class="cred-value">Senior Product Manager</span>
-          </li>
-          <li>
-            <span class="cred-label">Company</span>
-            <span class="cred-value">Anywhere Real Estate / Compass</span>
-          </li>
-          <li>
-            <span class="cred-label">Domain Experience</span>
-            <span class="cred-value">15+ years in PropTech</span>
-          </li>
-          <li>
-            <span class="cred-label">Education</span>
-            <span class="cred-value">MSIS, University of San Francisco</span>
-          </li>
-          <li>
-            <span class="cred-label">Undergrad</span>
-            <span class="cred-value">BS Business Admin, San José State</span>
-          </li>
-          <li>
-            <span class="cred-label">Certifications</span>
-            <span class="cred-value">CSPO &bull; Jira Fundamentals</span>
-          </li>
-          <li>
-            <span class="cred-label">Location</span>
-            <span class="cred-value">Bay Area, CA (Remote/Hybrid)</span>
-          </li>
-          <li>
-            <span class="cred-label">Focus Areas</span>
-            <span class="cred-value">PropTech &bull; AI &bull; Settlement</span>
-          </li>
-        </ul>
+      <hr class="case-divider">
+      <div class="case-body">
+        <div>
+          <p class="micro-label">The Problem</p>
+          <p>I was applying to Senior PM roles with no system behind it — scattered across browser tabs, email threads, and mental notes. No visibility into which companies I'd targeted, when I'd applied, who I'd followed up with, or whether my conversion rate was improving. I was optimising for activity instead of outcomes.</p>
+        </div>
+        <div>
+          <p class="micro-label">What I Built</p>
+          <p>A personal web app that centralises every job application in one dashboard — with status tracking, company notes, follow-up reminders, and pipeline visibility. Built and iterated it during an active search so every feature solved a real friction point.</p>
+        </div>
+        <div>
+          <p class="micro-label">Outcomes</p>
+          <ul class="outcomes-list">
+            <li><span class="outcome-arrow">→</span><span>19 applications tracked across 31 target companies — full pipeline visibility from applied to offer at every stage</span></li>
+            <li><span class="outcome-arrow">→</span><span>100% screen-to-interview conversion rate — both companies that booked a phone screen progressed to formal interviews</span></li>
+            <li><span class="outcome-arrow">→</span><span>Automated 2-week follow-up cadence — no application went silent without intentional outreach logged in the system</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="micro-label">Stack</p>
+          <div class="stack-tags">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Express</span>
+            <span class="stack-tag">HTML/CSS</span>
+            <span class="stack-tag">Conversion Tracking</span>
+            <span class="stack-tag">Pipeline Analytics</span>
+          </div>
+        </div>
       </div>
+
     </div>
-  </div>
-</section>
 
-<!-- CTA -->
-<section class="cta" id="contact">
-  <h2>Let's connect</h2>
-  <p>I'm actively exploring Director-level PM roles in PropTech and AI-forward companies.</p>
-  <a href="https://www.linkedin.com/in/hectormoran/" class="cta-btn" target="_blank" rel="noopener">Connect on LinkedIn</a>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer>
-  <p>&copy; 2026 Hector Moran. Built with purpose.</p>
-</footer>
-
-<script>
-  // Nav scroll effect
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
-  });
-
-  // Reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-</script>
+  <!-- ===== FOOTER ===== -->
+  <footer class="home-footer">
+    Built by Hector Moran · <a href="mailto:hmoran@me.com">hmoran@me.com</a>
+  </footer>
 
 </body>
 </html>
