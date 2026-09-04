@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album Art Moderation – Hector Moran</title>
+    <style>
+      /* ===== RESET ===== */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+        background: #161616;
+        color: #f0f0f0;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      /* ===== NAV ===== */
+      .home-nav {
+        background: #111;
+        border-bottom: 1px solid #252525;
+        padding: 0.85rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .home-nav-brand {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #e85020;
+      }
+
+      .home-nav-links {
+        display: flex;
+        gap: 1.75rem;
+      }
+
+      .home-nav-links a {
+        color: #777;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .home-nav-links a:hover,
+      .home-nav-links a.active {
+        color: #f0f0f0;
+      }
+
+      /* ===== HERO ===== */
+      .hero {
+        text-align: center;
+        padding: 5.5rem 1.5rem 4.5rem;
+        border-bottom: 1px solid #252525;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        border: 1.5px solid #e85020;
+        color: #e85020;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        padding: 0.4rem 1.1rem;
+        border-radius: 999px;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.4rem, 6vw, 3.8rem);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.05;
+        margin-bottom: 0.15rem;
+      }
+
+      .hero-tagline {
+        font-size: clamp(1.2rem, 3vw, 2rem);
+        font-weight: 800;
+        color: #e85020;
+        line-height: 1.05;
+        margin-bottom: 1.75rem;
+      }
+
+      .hero-desc {
+        font-size: 0.97rem;
+        color: #888;
+        max-width: 480px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 0.65rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        border: 1px solid #3a3a3a;
+        color: #e0e0e0;
+        background: transparent;
+        padding: 0.55rem 1.15rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: border-color 0.2s, background 0.2s;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .hero-btn:hover {
+        border-color: #666;
+        background: #1e1e1e;
+      }
+
+      /* ===== PAGE CONTAINER ===== */
+      .page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3.5rem 2.5rem 5rem;
+      }
+
+      /* ===== SECTION LABELS ===== */
+      .micro-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: #e85020;
+        text-transform: uppercase;
+        margin-bottom: 1.1rem;
+      }
+
+      /* ===== DARK CARD ===== */
+      .dark-card { margin-bottom: 1rem; }
+
+      .dark-card p {
+        font-size: 0.97rem;
+        color: #e0e0e0;
+        line-height: 1.8;
+      }
+
+      .dark-card p + p { margin-top: 0.85rem; }
+
+      /* ===== USER GRID ===== */
+      .user-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .user-card {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+
+      .user-card-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #e85020;
+        margin-bottom: 0.4rem;
+      }
+
+      .user-card-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.65rem;
+      }
+
+      .user-card p {
+        font-size: 0.9rem;
+        color: #e0e0e0;
+        line-height: 1.65;
+      }
+
+      /* ===== INSIGHT CALLOUT ===== */
+      .insight {
+        border-left: 3px solid #e85020;
+        background: rgba(232, 80, 32, 0.07);
+        border-radius: 0 8px 8px 0;
+        padding: 1.1rem 1.4rem;
+      }
+
+      .insight p {
+        font-size: 0.95rem;
+        color: #e0e0e0;
+        line-height: 1.75;
+      }
+
+      .insight strong { color: #fff; }
+
+      /* ===== DECISION CARDS ===== */
+      .decision-card {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 0.85rem;
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 1.25rem;
+        align-items: start;
+      }
+
+      .decision-side-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #666;
+        padding-top: 0.15rem;
+      }
+
+      .decision-title {
+        font-size: 0.97rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+
+      .decision-card p {
+        font-size: 0.92rem;
+        color: #e0e0e0;
+        line-height: 1.7;
+      }
+
+      /* ===== OUTCOME STATS ===== */
+      .outcome-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .stat-box {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 1.9rem;
+        font-weight: 800;
+        color: #e85020;
+        margin-bottom: 0.3rem;
+        line-height: 1.1;
+      }
+
+      .stat-label {
+        font-size: 0.82rem;
+        color: #bbb;
+        line-height: 1.4;
+      }
+
+      /* ===== CONFIDENCE BANDS ===== */
+      .band-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 190px;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 0.85rem;
+      }
+
+      .band-range {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .band-track {
+        background: #2a2a2a;
+        border-radius: 4px;
+        height: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .band-fill { height: 100%; border-radius: 4px; position: absolute; top: 0; }
+
+      .band-fill.approve { background: #4ade80; }
+      .band-fill.gray    { background: #f59e0b; }
+      .band-fill.reject  { background: #ef4444; }
+
+      .band-outcome { font-size: 0.88rem; color: #bbb; }
+      .band-outcome strong { color: #fff; font-weight: 600; }
+
+      /* ===== PIPELINE (full-bleed) ===== */
+      .pipeline-section {
+        background: #111;
+        border-top: 1px solid #252525;
+        border-bottom: 1px solid #252525;
+        padding: 3rem 0;
+      }
+
+      .section-desc {
+        font-size: 0.95rem;
+        color: #e0e0e0;
+        line-height: 1.7;
+        margin-bottom: 1.75rem;
+      }
+
+      .pipeline-track {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+
+      .pipeline-node { text-align: center; flex-shrink: 0; }
+
+      .pipeline-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.6rem;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .pipeline-icon.input  { background: #2a2a1a; color: #d4a017; border: 1px solid #4a3a00; }
+      .pipeline-icon.agent  { background: rgba(37, 99, 235, 0.15); color: #60a5fa; border: 1px solid #1e3a6a; }
+      .pipeline-icon.output { background: rgba(16, 185, 129, 0.12); color: #4ade80; border: 1px solid #14532d; }
+
+      .pipeline-node strong {
+        display: block;
+        font-size: 0.8rem;
+        color: #ccc;
+        margin-bottom: 0.2rem;
+      }
+
+      .pipeline-node span { font-size: 0.72rem; color: #bbb; }
+
+      .pipeline-arrow { color: #333; font-size: 1.2rem; flex-shrink: 0; }
+
+      .pipeline-callout {
+        margin-top: 1.5rem;
+        border-left: 3px solid #2563eb;
+        background: rgba(37, 99, 235, 0.07);
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.25rem;
+        font-size: 0.92rem;
+        color: #e0e0e0;
+        line-height: 1.65;
+      }
+
+      .pipeline-callout strong { color: #fff; }
+
+      /* ===== DEMO ===== */
+      .form-section { padding: 3rem 0; }
+
+      .cover-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .cover-pick {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 0.75rem;
+        cursor: pointer;
+        text-align: left;
+        font-family: inherit;
+        transition: border-color 0.2s, transform 0.15s;
+      }
+
+      .cover-pick:hover { border-color: #444; transform: translateY(-2px); }
+      .cover-pick.selected { border-color: #e85020; }
+
+      .cover-art {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 8px;
+        margin-bottom: 0.6rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cover-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.22), transparent 55%);
+      }
+
+      .art-1 { background: linear-gradient(140deg, #1e3a5f 0%, #2d6a7a 55%, #8ec5b6 100%); }
+      .art-2 { background: linear-gradient(140deg, #3d1f4d 0%, #7a2f5e 55%, #d98b7a 100%); }
+      .art-3 { background: linear-gradient(140deg, #2a1010 0%, #6b1f1f 50%, #1a1a1a 100%); }
+      .art-4 { background: linear-gradient(140deg, #14110a 0%, #4a3410 45%, #b0721a 100%); }
+
+      .cover-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+        margin-bottom: 0.15rem;
+      }
+
+      .cover-artist { font-size: 0.75rem; color: #777; }
+
+      .demo-note {
+        font-size: 0.8rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-button {
+        display: block;
+        width: 100%;
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 0.85rem;
+        background: #e85020;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.93rem;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.2s, opacity 0.2s;
+      }
+
+      .form-button:hover:not(:disabled) { background: #c94018; }
+      .form-button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      /* Stage cards */
+      .stage {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 1.35rem 1.5rem;
+        margin-bottom: 0.85rem;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: rise 0.35s ease forwards;
+      }
+
+      @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+      .stage-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .stage-name {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #60a5fa;
+      }
+
+      .stage-cost { font-size: 0.78rem; color: #666; }
+
+      .score-line {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .score-big { font-size: 2.1rem; font-weight: 800; line-height: 1; }
+      .score-big.low  { color: #4ade80; }
+      .score-big.mid  { color: #f59e0b; }
+      .score-big.high { color: #ef4444; }
+
+      .score-caption { font-size: 0.85rem; color: #888; }
+
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+
+      .chip {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        background: rgba(232,80,32,0.13);
+        color: #fb923c;
+        border: 1px solid rgba(232,80,32,0.28);
+      }
+
+      .chip.clean {
+        background: rgba(74,222,128,0.1);
+        color: #4ade80;
+        border-color: rgba(74,222,128,0.25);
+      }
+
+      .route {
+        font-size: 0.9rem;
+        color: #e0e0e0;
+        border-top: 1px solid #272727;
+        padding-top: 0.75rem;
+      }
+
+      .route strong { color: #fff; }
+
+      .steps { display: flex; flex-direction: column; gap: 0.85rem; }
+
+      .step {
+        display: grid;
+        grid-template-columns: 26px 1fr;
+        gap: 0.85rem;
+        align-items: start;
+        opacity: 0;
+        animation: rise 0.3s ease forwards;
+      }
+
+      .step-num {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(37,99,235,0.15);
+        border: 1px solid #1e3a6a;
+        color: #60a5fa;
+        font-size: 0.72rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .step-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #888;
+        margin-bottom: 0.2rem;
+      }
+
+      .step p { font-size: 0.9rem; color: #d5d5d5; line-height: 1.65; }
+
+      .verdict {
+        border-radius: 12px;
+        padding: 1.35rem 1.5rem;
+        margin-bottom: 0.85rem;
+        border: 1px solid;
+        opacity: 0;
+        animation: rise 0.35s ease forwards;
+      }
+
+      .verdict.approve { background: rgba(74,222,128,0.07);  border-color: rgba(74,222,128,0.3); }
+      .verdict.reject  { background: rgba(239,68,68,0.07);   border-color: rgba(239,68,68,0.3); }
+      .verdict.human   { background: rgba(245,158,11,0.07);  border-color: rgba(245,158,11,0.3); }
+
+      .verdict-label {
+        font-size: 1.1rem;
+        font-weight: 800;
+        margin-bottom: 0.35rem;
+      }
+
+      .verdict.approve .verdict-label { color: #4ade80; }
+      .verdict.reject  .verdict-label { color: #f87171; }
+      .verdict.human   .verdict-label { color: #fbbf24; }
+
+      .verdict p { font-size: 0.9rem; color: #d5d5d5; line-height: 1.65; }
+
+      .thinking { font-size: 0.85rem; color: #888; }
+
+      .dots::after {
+        content: "";
+        animation: dots 1.2s steps(4, end) infinite;
+      }
+
+      @keyframes dots {
+        0%   { content: ""; }
+        25%  { content: "."; }
+        50%  { content: ".."; }
+        75%  { content: "..."; }
+      }
+
+      /* ===== SKILLS ===== */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+      }
+
+      .skill-card {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+
+      .skill-card.blue  { border-left: 3px solid #3b82f6; }
+      .skill-card.green { border-left: 3px solid #4ade80; }
+      .skill-card.amber { border-left: 3px solid #f59e0b; }
+
+      .skill-card h3 {
+        font-size: 0.97rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 0.65rem;
+      }
+
+      .skill-card p { font-size: 0.9rem; color: #e0e0e0; line-height: 1.65; }
+
+      /* ===== FOOTER ===== */
+      .home-footer {
+        border-top: 1px solid #252525;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        font-size: 0.88rem;
+        color: #555;
+      }
+
+      .home-footer a { color: #e85020; }
+      .home-footer a:hover { text-decoration: underline; }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 700px) {
+        .skills-grid { grid-template-columns: 1fr 1fr; }
+        .outcome-stats { grid-template-columns: 1fr 1fr; }
+        .decision-card { grid-template-columns: 1fr; gap: 0.4rem; }
+        .cover-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 600px) {
+        .home-nav { padding: 0.85rem 1rem; }
+        .home-nav-links { gap: 1rem; }
+        .page { padding: 2rem 1rem 4rem; }
+        .user-grid { grid-template-columns: 1fr; }
+        .outcome-stats { grid-template-columns: 1fr 1fr; }
+        .skills-grid { grid-template-columns: 1fr; }
+        .band-row { grid-template-columns: 84px 1fr; }
+        .band-outcome { grid-column: 1 / -1; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ===== NAV ===== -->
+    <nav class="home-nav">
+      <a href="index.html" class="home-nav-brand">Hector M</a>
+      <div class="home-nav-links">
+        <a href="index.html">Home</a>
+        <a href="smart-home.html">Smart Home</a>
+        <a href="property-analytics.html">Rental Reports</a>
+        <a href="album-art.html" class="active">Moderation</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <span class="hero-badge">Case Study · AI Product</span>
+      <h1>Album Art Moderation</h1>
+      <p class="hero-tagline">Vision AI · Policy · Human Review</p>
+      <p class="hero-desc">Every album cover uploaded to a music platform ships straight to listeners. You can't review them all by hand, and you can't auto-approve the ambiguous ones. I built a two-stage pipeline that spends money only where the answer is actually in doubt.</p>
+      <div class="hero-actions">
+        <a href="index.html" class="hero-btn">← All projects</a>
+      </div>
+    </section>
+
+    <!-- ===== PAGE ===== -->
+    <div class="page">
+
+      <!-- ── THE PROBLEM ── -->
+      <section style="margin-bottom: 3rem;">
+        <p class="micro-label">The Problem</p>
+        <div class="dark-card">
+          <p>Album artwork is user-generated content with no gap between upload and audience. A platform can't put a human in front of every cover, and it can't send every cover to an expensive model either — most of them are obviously fine, and paying to think hard about obviously fine images is how a moderation budget disappears.</p>
+          <p>But the interesting part isn't detection. It's that the two ways of being wrong don't cost the same. A false approval puts harmful content in front of users — an app store violation, brand damage, a regulatory problem. A false rejection just adds an image to a review queue and annoys one artist. Those are not the same mistake, and a system that treats them as symmetric is mistuned by design.</p>
+        </div>
+      </section>
+
+      <!-- ── USERS & WHAT I LEARNED ── -->
+      <section style="margin-bottom: 3rem;">
+        <p class="micro-label">Users &amp; What I Learned</p>
+        <div class="user-grid">
+          <div class="user-card">
+            <div class="user-card-label">Primary User</div>
+            <div class="user-card-name">The human reviewer</div>
+            <p>Doesn't want a verdict handed down with no reasoning. Wants to open a queue item and see what the model saw, which policy line it applied, and what the argument on each side was — then make the call quickly and move on.</p>
+          </div>
+          <div class="user-card">
+            <div class="user-card-label">Critical Insight</div>
+            <div class="user-card-name">The gray zone is the product</div>
+            <p>The obvious cases don't need AI judgment, they need routing. All of the cost, all of the risk and all of the design work live in the band where the model isn't sure — so that band is where I put the expensive machinery.</p>
+          </div>
+        </div>
+        <div class="insight">
+          <p><strong>This reframed the whole build.</strong> Moderation reads like a detection problem — get the classifier right. It's actually a routing and cost problem: decide which cases deserve expensive thinking, decide where the line sits, and be honest that where you put the line is a risk decision, not a technical one.</p>
+        </div>
+      </section>
+
+      <!-- ── DECISIONS ── -->
+      <section style="margin-bottom: 3rem;">
+        <p class="micro-label">Decisions I Made and Why</p>
+
+        <div class="decision-card">
+          <div class="decision-side-label">Two stages, not one</div>
+          <div>
+            <div class="decision-title">Cheap on the obvious, expensive on the ambiguous.</div>
+            <p>A single careful pass over every image would be accurate and unaffordable. A fast vision pass scores each cover across six policy categories; anything clearly clean or clearly in breach exits immediately and costs nothing further. Only the middle band reaches the second agent — which is what makes the second agent affordable at all.</p>
+          </div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-side-label">Approve at 10%</div>
+          <div>
+            <div class="decision-title">The threshold is a risk-tolerance dial.</div>
+            <p>The score is confidence that an image breaks policy, so a 10% approve threshold means requiring 90%-plus confidence that a cover is clean before it passes unattended. The images in between aren't rejected — they get a second look. Tighter costs more, because more images reach the expensive path. That's the trade the dial makes, and it should be set per platform rather than baked in.</p>
+          </div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-side-label">Deliberation design</div>
+          <div>
+            <div class="decision-title">It has to argue both sides before it rules.</div>
+            <p>The second agent reads the policy document, then works through five fixed steps — observation, policy check, the case for approval, the case for rejection, verdict. Without the forced counter-argument it just agrees with the first pass. It runs at temperature 0 so the same image always reaches the same verdict, and if its output can't be parsed it retries once and then hands the image to a person instead of guessing.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── OUTCOMES ── -->
+      <section style="margin-bottom: 3rem;">
+        <p class="micro-label">Outcomes</p>
+        <div class="outcome-stats">
+          <div class="stat-box">
+            <div class="stat-number">$0.002</div>
+            <div class="stat-label">per image when the<br>first pass is decisive</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">$0.007</div>
+            <div class="stat-label">when the deliberation<br>agent has to run</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">6</div>
+            <div class="stat-label">policy categories<br>scored on the fast pass</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">5</div>
+            <div class="stat-label">reasoning steps before<br>any verdict is returned</div>
+          </div>
+        </div>
+        <div class="insight">
+          <p><strong>The result I'm proudest of is a bug I found in my own system.</strong> An illustrated cover scored 10% and auto-approved — the model was treating painted artwork more leniently than photography. I root-caused it, revised the prompt so artistic medium doesn't reduce severity, re-tested at 40% where it correctly routed to human review, and promoted the fix into the policy document as a standing principle.</p>
+        </div>
+      </section>
+
+      <!-- ── CONFIDENCE BANDS ── -->
+      <section style="margin-bottom: 3rem;">
+        <p class="micro-label">Where the Lines Sit</p>
+        <p class="section-desc">The first pass returns a 0–100 score: its confidence that the image breaks policy. Three bands, two thresholds, and the thresholds are deliberately asymmetric.</p>
+
+        <div class="band-row">
+          <div class="band-range">≤ 10%</div>
+          <div class="band-track"><div class="band-fill approve" style="left:0; width:10%;"></div></div>
+          <div class="band-outcome"><strong>Auto-approve</strong> — passes unattended</div>
+        </div>
+        <div class="band-row">
+          <div class="band-range">11–79%</div>
+          <div class="band-track"><div class="band-fill gray" style="left:10%; width:70%;"></div></div>
+          <div class="band-outcome"><strong>Deliberation agent</strong> — second look</div>
+        </div>
+        <div class="band-row">
+          <div class="band-range">≥ 80%</div>
+          <div class="band-track"><div class="band-fill reject" style="left:80%; width:20%;"></div></div>
+          <div class="band-outcome"><strong>Auto-reject</strong> — no second look needed</div>
+        </div>
+      </section>
+
+    </div><!-- /page -->
+
+    <!-- ── PIPELINE (full-bleed) ── -->
+    <section class="pipeline-section">
+      <div style="max-width: 960px; margin: 0 auto; padding: 0 2.5rem;">
+        <p class="micro-label">2-Agent Moderation Pipeline</p>
+        <p class="section-desc">Most images never reach the second agent — that is the point.</p>
+        <div class="pipeline-track">
+          <div class="pipeline-node">
+            <div class="pipeline-icon input">IMG</div>
+            <strong>Image Upload</strong>
+            <span>Artwork submitted</span>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="pipeline-icon agent">1</div>
+            <strong>Scan</strong>
+            <span>Score 6 categories</span>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="pipeline-icon agent">2</div>
+            <strong>Deliberate</strong>
+            <span>Only when unsure</span>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-node">
+            <div class="pipeline-icon output">3</div>
+            <strong>Decide</strong>
+            <span>Approve · reject · escalate</span>
+          </div>
+        </div>
+        <div class="pipeline-callout">
+          <strong>Pipeline:</strong> Image uploaded → Agent 1 scores all six policy categories → clear cases exit immediately as auto-approve or auto-reject and cost nothing further → only gray-zone images reach Agent 2, which reads the policy and argues both sides → anything still unresolved goes to a human with the full reasoning chain.
+        </div>
+      </div>
+    </section>
+
+    <div class="page">
+
+      <!-- ── DEMO ── -->
+      <section class="form-section">
+        <p class="micro-label">Try the Demo</p>
+        <p class="section-desc">Pick a cover and watch it move through the pipeline — the fast scan, the routing decision, and, if it lands in the gray zone, the deliberation agent arguing both sides before it rules.</p>
+
+        <div class="cover-grid" id="coverGrid"></div>
+
+        <p class="demo-note">These four covers are invented artwork and invented artists, and the scores and reasoning are scripted to mirror what the real system produces — this is a walkthrough of the pipeline, not a live model call. The working portal runs locally against GPT-4o mini Vision.</p>
+
+        <button type="button" class="form-button" id="runButton" disabled>Select a cover to run</button>
+
+        <div id="results" style="margin-top: 2rem;"></div>
+      </section>
+
+      <!-- ── SKILLS ── -->
+      <section>
+        <p class="micro-label">What This Demonstrates</p>
+        <div class="skills-grid">
+          <div class="skill-card blue">
+            <h3>💸 Cost as a design constraint</h3>
+            <p>Two-tier routing is a product decision before it's an engineering one. The measured $0.002 / $0.007 split is the whole argument for building it this way.</p>
+          </div>
+          <div class="skill-card green">
+            <h3>⚖️ Risk framing</h3>
+            <p>Asymmetric thresholds, set per platform rather than baked in. Naming which mistake you'd rather make is the part most moderation demos skip.</p>
+          </div>
+          <div class="skill-card amber">
+            <h3>🔍 Owning the accuracy bar</h3>
+            <p>Found my own false negative, root-caused it to how the model read illustrated art, fixed the prompt, re-tested, and wrote the fix into the policy.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /page -->
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="home-footer">
+      Built by Hector Moran · <a href="mailto:hmoran@me.com">hmoran@me.com</a>
+    </footer>
+
+    <script>
+      var COVERS = [
+        {
+          art: "art-1",
+          title: "Paper Lanterns",
+          artist: "Meridian Fields",
+          score: 4,
+          flags: [],
+          route: "approve",
+          cost: "0.0021"
+        },
+        {
+          art: "art-2",
+          title: "Static Bloom",
+          artist: "The Ninth Hour",
+          score: 34,
+          flags: [{ cat: "NUDITY", conf: 34 }],
+          route: "gray",
+          cost: "0.0071",
+          verdict: "approve",
+          confidence: 22,
+          steps: [
+            { t: "Observation", p: "An illustrated figure rendered in flat colour, seen from behind against a floral field. No explicit anatomy is depicted; the composition emphasises the pattern work rather than the figure." },
+            { t: "Policy Check", p: "The relevant category is NUDITY. The initial scan flagged the image on implied exposure. The policy treats suggestive posing as a violation only where a reasonable person would read the intent as sexual gratification." },
+            { t: "Case for Approval", p: "The figure is stylised rather than photographic, no anatomy is visible, and the framing directs attention to the surrounding pattern. Read as illustration, the cover is closer to decorative art than to sexual content." },
+            { t: "Case for Rejection", p: "Artistic medium is not a shield — the policy is explicit that illustration does not reduce severity, and implied acts count. If the pose were read as deliberate suggestion, the category would apply on its face." },
+            { t: "Verdict", p: "The counter-argument is the right one to test, but nothing here rises to implied sexual activity under a reasonable-person reading. Approve, with low confidence in violation." }
+          ]
+        },
+        {
+          art: "art-3",
+          title: "Iron Hymn",
+          artist: "Vantablack Choir",
+          score: 61,
+          flags: [{ cat: "VIOLENCE", conf: 58 }, { cat: "HATE_SYMBOLS", conf: 24 }],
+          route: "gray",
+          cost: "0.0073",
+          verdict: "reject",
+          confidence: 78,
+          steps: [
+            { t: "Observation", p: "A high-contrast red and black composition with a bladed form at the centre and spatter radiating from it. A geometric emblem sits behind the central figure, partially obscured." },
+            { t: "Policy Check", p: "Two categories are in play. VIOLENCE covers gore and the glorification of harm. HATE_SYMBOLS covers recognised extremist iconography; the emblem is stylised and does not match a known symbol." },
+            { t: "Case for Approval", p: "Aggressive imagery is a long-standing convention of the genre, the emblem appears invented rather than referential, and no identifiable person or group is targeted." },
+            { t: "Case for Rejection", p: "The spatter and the bladed form together read as the depiction of violence for its own sake rather than as abstraction, which the policy treats as gore regardless of medium. Genre convention is context; the policy says context informs but does not excuse." },
+            { t: "Verdict", p: "The hate-symbol flag does not hold — the emblem is not identifiable. The violence flag does. Reject on VIOLENCE; the second flag is recorded but not relied on." }
+          ]
+        },
+        {
+          art: "art-4",
+          title: "Nightshade Parade",
+          artist: "Lower Third",
+          score: 88,
+          flags: [{ cat: "DRUGS", conf: 84 }, { cat: "SELF_HARM", conf: 41 }],
+          route: "reject",
+          cost: "0.0019"
+        }
+      ];
+
+      var CAT_LABEL = {
+        NUDITY: "Nudity",
+        PROFANITY: "Profanity",
+        VIOLENCE: "Violence",
+        HATE_SYMBOLS: "Hate symbols",
+        DRUGS: "Drugs",
+        SELF_HARM: "Self-harm"
+      };
+
+      var grid = document.getElementById("coverGrid");
+      var runButton = document.getElementById("runButton");
+      var results = document.getElementById("results");
+      var selected = null;
+      var running = false;
+
+      COVERS.forEach(function (c, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "cover-pick";
+        b.setAttribute("aria-label", "Select " + c.title + " by " + c.artist);
+        b.innerHTML =
+          '<div class="cover-art ' + c.art + '"></div>' +
+          '<div class="cover-title">' + c.title + "</div>" +
+          '<div class="cover-artist">' + c.artist + "</div>";
+        b.addEventListener("click", function () {
+          if (running) return;
+          selected = i;
+          Array.prototype.forEach.call(grid.children, function (el, j) {
+            el.classList.toggle("selected", j === i);
+          });
+          runButton.disabled = false;
+          runButton.textContent = "Run moderation on “" + c.title + "”";
+          results.innerHTML = "";
+        });
+        grid.appendChild(b);
+      });
+
+      function wait(ms) {
+        return new Promise(function (r) { setTimeout(r, ms); });
+      }
+
+      function add(html) {
+        var wrap = document.createElement("div");
+        wrap.innerHTML = html;
+        var node = wrap.firstElementChild;
+        results.appendChild(node);
+        return node;
+      }
+
+      function scoreClass(s) {
+        if (s <= 10) return "low";
+        if (s >= 80) return "high";
+        return "mid";
+      }
+
+      async function run() {
+        if (selected === null || running) return;
+        var c = COVERS[selected];
+        running = true;
+        runButton.disabled = true;
+        results.innerHTML = "";
+
+        // Stage 1 — scanning
+        var s1 = add(
+          '<div class="stage">' +
+            '<div class="stage-head"><span class="stage-name">Agent 1 · Fast scan</span>' +
+            '<span class="stage-cost">GPT-4o mini Vision · low detail</span></div>' +
+            '<p class="thinking">Scoring six policy categories<span class="dots"></span></p>' +
+          "</div>"
+        );
+        await wait(1500);
+
+        var chips = c.flags.length
+          ? c.flags.map(function (f) {
+              return '<span class="chip">' + CAT_LABEL[f.cat] + " · " + f.conf + "%</span>";
+            }).join("")
+          : '<span class="chip clean">No categories flagged</span>';
+
+        var routeText;
+        if (c.route === "approve") {
+          routeText = "Score is at or under the 10% approve threshold. <strong>Auto-approved</strong> — the deliberation agent never runs, and the image costs nothing further.";
+        } else if (c.route === "reject") {
+          routeText = "Score is at or above the 80% reject threshold. <strong>Auto-rejected</strong> — no second look needed.";
+        } else {
+          routeText = "Score falls in the 11–79% gray zone. <strong>Routed to the deliberation agent</strong> for a second, more expensive look.";
+        }
+
+        s1.innerHTML =
+          '<div class="stage-head"><span class="stage-name">Agent 1 · Fast scan</span>' +
+          '<span class="stage-cost">$' + (c.route === "gray" ? "0.0018" : c.cost) + "</span></div>" +
+          '<div class="score-line"><span class="score-big ' + scoreClass(c.score) + '">' + c.score + "%</span>" +
+          '<span class="score-caption">confidence the image breaks policy</span></div>' +
+          '<div class="chips">' + chips + "</div>" +
+          '<div class="route">' + routeText + "</div>";
+
+        await wait(700);
+
+        if (c.route === "gray") {
+          var s2 = add(
+            '<div class="stage">' +
+              '<div class="stage-head"><span class="stage-name">Agent 2 · Deliberation</span>' +
+              '<span class="stage-cost">high detail · temperature 0</span></div>' +
+              '<p class="thinking">Reading the policy document and arguing both sides<span class="dots"></span></p>' +
+            "</div>"
+          );
+          await wait(1600);
+
+          s2.innerHTML =
+            '<div class="stage-head"><span class="stage-name">Agent 2 · Deliberation</span>' +
+            '<span class="stage-cost">high detail · temperature 0</span></div>' +
+            '<div class="steps" id="steps"></div>';
+
+          var stepWrap = document.getElementById("steps");
+          for (var i = 0; i < c.steps.length; i++) {
+            var st = c.steps[i];
+            var el = document.createElement("div");
+            el.className = "step";
+            el.innerHTML =
+              '<div class="step-num">' + (i + 1) + "</div>" +
+              '<div><div class="step-title">' + st.t + "</div><p>" + st.p + "</p></div>";
+            stepWrap.appendChild(el);
+            await wait(750);
+          }
+          await wait(400);
+        }
+
+        var vClass, vLabel, vBody;
+        if (c.route === "approve") {
+          vClass = "approve"; vLabel = "Auto-approved";
+          vBody = "Decided by the first pass alone. Total cost <strong>$" + c.cost + "</strong>. This is the path most images take — and the reason the expensive path is affordable.";
+        } else if (c.route === "reject") {
+          vClass = "reject"; vLabel = "Auto-rejected";
+          vBody = "Decided by the first pass alone. Total cost <strong>$" + c.cost + "</strong>. Flagged categories are written to the audit trail and a signed webhook fires.";
+        } else if (c.verdict === "approve") {
+          vClass = "approve"; vLabel = "Approved after deliberation";
+          vBody = "Agent 2 returned APPROVE at " + c.confidence + "% confidence in violation. Total cost <strong>$" + c.cost + "</strong> — roughly 3.5× the fast path, spent only because the answer was genuinely uncertain.";
+        } else {
+          vClass = "reject"; vLabel = "Rejected after deliberation";
+          vBody = "Agent 2 returned REJECT at " + c.confidence + "% confidence in violation. Total cost <strong>$" + c.cost + "</strong>. The full reasoning chain is attached to the record, so a human can audit the call later.";
+        }
+
+        add(
+          '<div class="verdict ' + vClass + '">' +
+            '<div class="verdict-label">' + vLabel + "</div>" +
+            "<p>" + vBody + "</p>" +
+          "</div>"
+        );
+
+        running = false;
+        runButton.disabled = false;
+        runButton.textContent = "Run again";
+      }
+
+      runButton.addEventListener("click", run);
+    </script>
+  </body>
+</html>
