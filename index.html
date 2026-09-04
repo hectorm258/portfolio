@@ -354,7 +354,7 @@
     <span class="hero-badge">OpenClaw Projects</span>
     <h1>Hector Moran</h1>
     <p class="hero-tagline">Senior Product Manager</p>
-    <p class="hero-desc">I'm a Senior PM who ships code. I use OpenClaw, my personal AI agent framework, to build and deploy multi-agent tools that solve real workflows — designed, built, and run by me, without a dev team.</p>
+    <p class="hero-desc">I ship working software without a dev team. I design the pipeline, define what correct looks like, and write the tests and evals; agents write the implementation. OpenClaw is the agent framework I build with.</p>
     <div class="hero-actions">
       <a href="https://linkedin.com/in/hectormoran" class="hero-btn" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="mailto:hmoran@me.com" class="hero-btn">hmoran@me.com</a>
@@ -449,7 +449,48 @@
 
     </div>
 
-    <!-- ── Card 3: Job Search Dashboard ── (hidden from public portfolio)
+        <!-- ── Card 3: Album Art Moderation ── -->
+    <div class="case-card">
+      <div class="case-header">
+        <div>
+          <h2 class="case-title">Album Art Moderation</h2>
+          <p class="case-subtitle">Content Moderation · Node · Express · React · GPT-4o mini Vision · SQLite</p>
+        </div>
+      </div>
+      <hr class="case-divider">
+      <div class="case-body">
+        <div>
+          <p class="micro-label">The Problem</p>
+          <p>Album artwork is user-generated content that ships straight to listeners. No platform can review every cover by hand, and it can't afford to auto-approve the ambiguous ones either. The hard part isn't detection — it's that the two ways of being wrong don't cost the same. A false approval puts harmful content in front of users; a false rejection just adds an image to a review queue. The product question is where you draw that line, and what it costs you to draw it tighter.</p>
+        </div>
+        <div>
+          <p class="micro-label">What I Built</p>
+          <p>A moderation portal with a two-stage AI pipeline. A fast vision pass scores every image across six policy categories and routes by confidence — clear cases auto-approve or auto-reject and cost nothing further. Only genuinely ambiguous images reach a second, more expensive agent that reads the policy document, argues both the approval and the rejection case, and rules. Anything still unresolved goes to a human review queue with the full reasoning chain attached, so a reviewer sees why it landed there.</p>
+        </div>
+        <div>
+          <p class="micro-label">Outcomes</p>
+          <ul class="outcomes-list">
+            <li><span class="outcome-arrow">→</span><span>A two-tier cost model, measured not estimated — $0.002 per image when the first pass is decisive, $0.007 when the deliberation agent runs. The expensive path only fires where the answer is genuinely uncertain</span></li>
+            <li><span class="outcome-arrow">→</span><span>I caught and fixed my own false negative — an illustrated cover scored 10% and auto-approved because the model treated painted artwork more leniently than photographs. After a prompt revision it re-scored at 40% and routed correctly to human review</span></li>
+            <li><span class="outcome-arrow">→</span><span>Every decision is auditable and portable — thresholds are configurable per platform's risk tolerance, and each ruling writes a full audit trail and fires a signed webhook</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="micro-label">Stack</p>
+          <div class="stack-tags">
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">Express</span>
+            <span class="stack-tag">React</span>
+            <span class="stack-tag">GPT-4o mini Vision</span>
+            <span class="stack-tag">SQLite</span>
+            <span class="stack-tag">Trust &amp; Safety</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+<!-- ── Card 3: Job Search Dashboard ── (hidden from public portfolio)
     <div class="case-card">
       <div class="case-header">
         <div>
