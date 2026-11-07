@@ -285,6 +285,16 @@
       margin-bottom: 1.75rem;
     }
 
+    .pipeline-steps {
+      margin: 0 0 1.75rem 1.25rem;
+      font-size: 0.95rem;
+      color: #e0e0e0;
+      line-height: 1.7;
+    }
+
+    .pipeline-steps li + li { margin-top: 0.4rem; }
+    .pipeline-steps strong { color: #fff; }
+
     .pipeline-track {
       display: flex;
       align-items: center;
@@ -629,8 +639,8 @@
   <section class="hero">
     <span class="hero-badge">Case Study · Data Product</span>
     <h1>Property Management Reporter</h1>
-    <p class="hero-tagline">PDF → AI → Tax-Ready Report</p>
-    <p class="hero-desc">I spent 1 hour every month manually reconciling rental statements from 3 different property managers. Now I drag a PDF into a browser and the report is done in under a minute — ready for my accountant at tax time.</p>
+    <p class="hero-tagline">PDF → Tax-Ready Report</p>
+    <p class="hero-desc">I spent 1 hour every month manually reconciling rental statements from 3 different property managers. Now I drag a PDF into a browser and the report is done in under a minute, ready for my accountant at tax time.</p>
     <div class="hero-actions">
       <a href="index.html" class="hero-btn">← All projects</a>
     </div>
@@ -643,7 +653,7 @@
     <section style="margin-bottom: 3rem;">
       <p class="micro-label">The Problem</p>
       <div class="dark-card">
-        <p>I own 6 rental properties managed by 3 different companies. Every month, 3 PDF statements arrive — each formatted differently, each using different category names, each requiring manual reconciliation before anything useful can be done with the data.</p>
+        <p>I own 6 rental properties managed by 3 different companies. Every month, 3 PDF statements arrive, each formatted differently, each using different category names, each requiring manual reconciliation before anything useful can be done with the data.</p>
         <p>The real problem wasn't just my time. It was that my accountant needed IRS-standard categories and I needed cash-flow visibility. Two users. Two completely different outputs. One messy manual process serving neither of them well.</p>
       </div>
     </section>
@@ -654,8 +664,8 @@
       <div class="user-grid">
         <div class="user-card">
           <div class="user-card-label">Primary User</div>
-          <div class="user-card-name">Me — property owner</div>
-          <p>Wants monthly net income per property at a glance. Doesn't care about line-item detail. Needs speed — not a 2-hour Saturday job.</p>
+          <div class="user-card-name">Me: property owner</div>
+          <p>Wants monthly net income per property at a glance. Doesn't care about line-item detail. Needs speed.</p>
         </div>
         <div class="user-card">
           <div class="user-card-label">Secondary User</div>
@@ -664,7 +674,7 @@
         </div>
       </div>
       <div class="insight">
-        <p><strong>Key insight from user research:</strong> The accountant is the end user of my output. Designing for her needs first — IRS categories, professional PDF, verifiable totals — made the product actually useful, not just faster for me.</p>
+        <p><strong>What I learned:</strong> The accountant is the end user of my output. Designing for her needs first (IRS categories, a professional PDF, totals she can verify) made the product actually useful, not just faster for me.</p>
       </div>
     </section>
 
@@ -673,15 +683,19 @@
       <p class="micro-label">Decisions I Made and Why</p>
       <div class="decision-card">
         <div class="decision-title">PDF output over spreadsheet</div>
-        <p>My accountant works from PDFs — not Excel. Building a spreadsheet export would've optimized for my comfort, not her workflow. A structured PDF meant she could use it immediately, no conversion step needed.</p>
+        <p>My accountant works from PDFs, not Excel. A structured PDF meant she could use it immediately, with no conversion step.</p>
       </div>
       <div class="decision-card">
-        <div class="decision-title">3-agent pipeline over a single prompt</div>
-        <p>A single monolithic prompt produced hallucinated totals I couldn't catch. Splitting into extract → normalize → report meant I could validate accuracy at each step before anything hit the final output.</p>
+        <div class="decision-title">Rules over AI at runtime</div>
+        <p>I used an AI coding assistant to build the tool, but the tool itself runs on fixed, rule-based code. Tax numbers need to be predictable, free and auditable. The same statement always produces the same result, at zero cost per upload, and every figure traces back to a line on the original PDF.</p>
       </div>
       <div class="decision-card">
-        <div class="decision-title">IRS categories as the canonical schema</div>
-        <p>Each property manager used their own terminology. Rather than preserving it, I normalized everything to IRS Schedule E categories. This made every report tax-ready by default and eliminated the back-and-forth with my accountant about what each line item meant.</p>
+        <div class="decision-title">Three steps instead of one</div>
+        <p>Splitting the work into extract → categorize → report meant I could check the numbers at each step and fix a problem in one place without touching the rest.</p>
+      </div>
+      <div class="decision-card">
+        <div class="decision-title">IRS categories as the standard</div>
+        <p>Each property manager used its own wording. Mapping every expense to IRS Schedule E categories made each report tax-ready by default.</p>
       </div>
     </section>
 
@@ -703,7 +717,7 @@
         </div>
       </div>
       <div class="dark-card">
-        <p>I download the statement PDF from each property management portal, drag it into the upload page, and the report is generated in under a minute. At year-end, I hand my tax accountant 6 individual PDFs — one per property, covering all 12 months of revenue and expenses, already mapped to IRS categories. No spreadsheets, no manual data entry, no prep work.</p>
+        <p>I download the statement PDF from each property management portal, drag it into the upload page, and the report is generated in under a minute. Each report fills in as the months come in. At year-end, I'll hand my accountant 6 PDFs, one per property, with revenue and expenses already mapped to IRS categories. No spreadsheets, no manual data entry, no prep work.</p>
       </div>
     </section>
 
@@ -712,8 +726,13 @@
   <!-- ── PIPELINE (full-bleed) ── -->
   <section class="pipeline-section">
     <div style="max-width: 960px; margin: 0 auto; padding: 0 2.5rem;">
-      <p class="micro-label">3-Agent Processing Pipeline</p>
-      <p class="section-desc">Behind every report is an AI pipeline that extracts data, standardises format, and generates professional output.</p>
+      <p class="micro-label">Processing Pipeline</p>
+      <ol class="pipeline-steps">
+        <li><strong>PDF upload:</strong> The statement is dragged onto the upload page.</li>
+        <li><strong>Extract:</strong> The text is pulled from the PDF, the property manager is identified, and that manager's parsing rules turn it into a list of transactions.</li>
+        <li><strong>Categorize &amp; accumulate:</strong> Each expense is sorted into an IRS Schedule E category by keyword and added to the property's running totals for the year.</li>
+        <li><strong>Report:</strong> A tax-ready annual PDF is generated with monthly breakdowns and year-to-date totals.</li>
+      </ol>
       <div class="pipeline-track">
         <div class="pipeline-node">
           <div class="pipeline-icon input">📋</div>
@@ -724,23 +743,23 @@
         <div class="pipeline-node">
           <div class="pipeline-icon agent">1</div>
           <strong>Extract</strong>
-          <span>Parse PDF</span>
+          <span>Pull transactions</span>
         </div>
         <div class="pipeline-arrow">→</div>
         <div class="pipeline-node">
           <div class="pipeline-icon agent">2</div>
-          <strong>Normalize</strong>
-          <span>Standardise data</span>
+          <strong>Categorize</strong>
+          <span>Update running totals</span>
         </div>
         <div class="pipeline-arrow">→</div>
         <div class="pipeline-node">
           <div class="pipeline-icon output">3</div>
           <strong>Report</strong>
-          <span>Generate PDF</span>
+          <span>Generate annual PDF</span>
         </div>
       </div>
       <div class="pipeline-callout">
-        <strong>Pipeline:</strong> Upload statement → Agent 1 parses PDF and extracts transactions → Agent 2 normalises to standardised JSON with IRS categories → Agent 3 generates professional tax-ready PDF with monthly breakdown and totals.
+        <strong>Pipeline:</strong> Upload statement → extract transactions → categorize to IRS categories → update the year's running totals → generate the annual PDF.
       </div>
     </div>
   </section>
@@ -750,13 +769,13 @@
     <!-- ── DEMO ── -->
     <section class="form-section">
       <p class="micro-label">Try the Demo</p>
-      <p class="section-desc">Select a property to see a preview that matches the actual PDF output — same layout, same data structure. Property names are changed; numbers are representative.</p>
+      <p class="section-desc">Select a property to see a preview that matches the actual PDF output: same layout, same data structure. Property names are changed; numbers are representative.</p>
 
       <label class="form-label" for="propertySelect">Select Property</label>
       <select id="propertySelect" class="form-select" onchange="document.getElementById('processButton').disabled = !this.value">
         <option value="">-- Choose a property --</option>
-        <option value="4521 Maple Ridge Drive, Austin, TX">4521 Maple Ridge Drive, Austin, TX — HomeRiver Group</option>
-        <option value="8734 Oakwood Court, Nashville, TN">8734 Oakwood Court, Nashville, TN — Fox Rental Management</option>
+        <option value="4521 Maple Ridge Drive, Austin, TX">4521 Maple Ridge Drive, Austin, TX (HomeRiver Group)</option>
+        <option value="8734 Oakwood Court, Nashville, TN">8734 Oakwood Court, Nashville, TN (Fox Rental Management)</option>
       </select>
 
       <button type="button" class="form-button" id="processButton" onclick="processProperty()" disabled>
@@ -791,7 +810,7 @@
 
     <!-- ── IRS CATEGORIES ── -->
     <section style="margin-bottom: 3rem;">
-      <p class="micro-label">15 IRS Schedule E Expense Categories</p>
+      <p class="micro-label">15 Expense Categories Based on Schedule E</p>
       <div class="irs-grid">
         <div class="irs-item">1. Advertising</div>
         <div class="irs-item">2. Auto &amp; Travel</div>
@@ -816,16 +835,16 @@
       <p class="micro-label">Why This Demonstrates PM Skills</p>
       <div class="skills-grid">
         <div class="skill-card blue">
-          <h3>📊 AI + Data Discipline</h3>
-          <p>A 3-agent pipeline automates the messy parts (parsing, extraction, categorisation). But the system is only valuable because it solves a real user problem with rigorous data validation.</p>
+          <h3>📊 Data Discipline</h3>
+          <p>Fixed rules do the parsing, categorizing and totaling. I chose rules over AI at runtime because tax numbers need to be predictable and traceable back to the original PDF.</p>
         </div>
         <div class="skill-card green">
           <h3>👥 Secondary User Research</h3>
-          <p>Primary user: property owner. Secondary user: accountant. Both need different things — surfaced through actual interviews, not assumptions.</p>
+          <p>Primary user: property owner. Secondary user: accountant. Both need different things. I asked my accountant what format worked best, and the answer was a PDF.</p>
         </div>
         <div class="skill-card amber">
           <h3>✅ Quality Assurance</h3>
-          <p>100% accuracy validation against source data. Not just "it works" — verified and tested on 6 real properties across 3 statement formats.</p>
+          <p>Every line item extracted and matched to the right property, checked against the source statements. Tested on 6 real properties across 3 statement formats.</p>
         </div>
       </div>
     </section>
